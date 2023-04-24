@@ -1,7 +1,7 @@
-package com.gsquad.lunih.services.product;
+package com.gsquad.lunih.services.demo.product;
 
-import com.gsquad.lunih.dtos.ProductDTO;
-import com.gsquad.lunih.entities.Product;
+import com.gsquad.lunih.dtos.demo.ProductDTO;
+import com.gsquad.lunih.entities.demo.Product;
 
 import java.util.List;
 

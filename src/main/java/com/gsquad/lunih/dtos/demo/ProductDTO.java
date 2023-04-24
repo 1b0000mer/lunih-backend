@@ -1,4 +1,4 @@
-package com.gsquad.lunih.dtos;
+package com.gsquad.lunih.dtos.demo;
 
 import lombok.Getter;
 import lombok.Setter;

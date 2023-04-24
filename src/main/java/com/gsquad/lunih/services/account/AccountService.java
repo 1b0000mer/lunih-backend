@@ -1,8 +1,8 @@
 package com.gsquad.lunih.services.account;
 
-import com.gsquad.lunih.dtos.CompanyAccountDTO;
-import com.gsquad.lunih.dtos.StudentAccountDTO;
-import com.gsquad.lunih.dtos.UniversityAccountDTO;
+import com.gsquad.lunih.dtos.accountDTO.CompanyAccountDTO;
+import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
+import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
 import com.gsquad.lunih.entities.Account;
 
 import java.util.List;
