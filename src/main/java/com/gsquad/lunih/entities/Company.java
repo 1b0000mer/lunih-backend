@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class University {
+public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,9 @@ public class University {
     @OneToOne
     private Account account;
 
-    private String name;
+    private String companyName;
+
+    private String companyPersonName;
 
     private String address;
 
