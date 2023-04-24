@@ -45,14 +45,4 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Account> delete(@PathVariable int id) {
-        try {
-            Account existAccount = service.get(id);
-            return new ResponseEntity<>(service.delete(existAccount.getId()), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 }
