@@ -44,9 +44,13 @@ public class AccountServiceImpl implements AccountService {
 
         Student student = new Student();
         student.setStudentID(dto.getStudentID());
+        student.setAccount(acc);
         student.setFirstName(dto.getFirstName());
         student.setSurName(dto.getSurName());
-        student.setAccount(acc);
+        student.setBirthDay(dto.getBirthDay());
+        student.setGender(dto.getGender());
+        student.setPhoneNumber(dto.getPhoneNumber());
+        student.setApproved(null);
         studentRepo.save(student);
 
         return acc;
@@ -60,12 +64,5 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account createNewUniversity(UniversityAccountDTO dto) {
         return null;
-    }
-
-    @Override
-    public Account delete(int id) {
-        Account acc = get(id);
-        accountRepo.delete(acc);
-        return acc;
     }
 }

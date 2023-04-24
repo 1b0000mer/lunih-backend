@@ -17,5 +17,4 @@ public interface AccountService {
     Account createNewCompany(CompanyAccountDTO dto);
     Account createNewUniversity(UniversityAccountDTO dto);
 
-    Account delete(int id);
 }

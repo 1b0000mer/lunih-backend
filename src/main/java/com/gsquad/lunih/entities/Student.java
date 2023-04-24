@@ -25,7 +25,10 @@ public class Student {
     @Column(length = 50)
     private String studentID;
 
-    @OneToOne
+    @OneToOne(
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true
+    )
     private Account account;
 
     @Column(nullable = false, length = 50)
@@ -39,7 +42,7 @@ public class Student {
     @ApiModelProperty(value = "female : 1, male: 0")
     private Boolean gender;
 
-    @Column(length = 10)
+    @Column(length = 18)
     private String phoneNumber;
 
     @ApiModelProperty(value = "approved by admin/university?")
