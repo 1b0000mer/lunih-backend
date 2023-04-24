@@ -1,4 +1,4 @@
-package com.gsquad.lunih.dtos;
+package com.gsquad.lunih.dtos.accountDTO;
 
 import com.gsquad.lunih.entities.Account;
 import lombok.Getter;
@@ -10,8 +10,6 @@ public class StudentAccountDTO {
     private String email;
 
     private String password;
-
-    private int role_id;
 
     private String studentID;
 

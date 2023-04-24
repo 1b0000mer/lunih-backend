@@ -1,6 +1,6 @@
 package com.gsquad.lunih.controllers;
 
-import com.gsquad.lunih.dtos.StudentAccountDTO;
+import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.entities.Account;
 import com.gsquad.lunih.services.account.AccountService;
 import org.springframework.http.HttpStatus;
