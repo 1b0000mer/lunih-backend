@@ -2,7 +2,6 @@ package com.gsquad.lunih;
 
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.dtos.student.ApproveStudentDTO;
-import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.repos.AccountRepo;
 import com.gsquad.lunih.services.account.AccountService;
 import com.gsquad.lunih.services.student.StudentService;
