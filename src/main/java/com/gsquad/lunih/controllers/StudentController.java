@@ -1,8 +1,10 @@
 package com.gsquad.lunih.controllers;
 
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
+import com.gsquad.lunih.dtos.student.ApproveStudentDTO;
 import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.services.student.StudentService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,47 +25,37 @@ public class StudentController {
         this.service = service;
     }
 
+    @ApiOperation(value = "list all student")
     @GetMapping
     public ResponseEntity<List<Student>> listAll() {
         return new ResponseEntity<>(service.listAll(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "get student by id")
     @GetMapping("/{studentID}")
     public ResponseEntity<Student> getById(@PathVariable String studentID) {
-        try {
-            Student student = service.get(studentID);
-            return new ResponseEntity<>(student, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.get(studentID), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "get student currently logged in")
     @GetMapping("/current")
     public ResponseEntity<Student> getCurrent(Principal principal) {
-        try {
-            return new ResponseEntity<>(service.getCurrent(principal), HttpStatus.OK);
-        } catch (ValidationException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(service.getCurrent(principal), HttpStatus.OK);
     }
 
     @PutMapping("/{studentID}")
     public ResponseEntity<Student> update(@PathVariable String studentID, @Valid @RequestBody StudentAccountDTO dto) {
-        try {
-            Student existStudent = service.get(studentID);
-            return new ResponseEntity<>(service.update(existStudent.getStudentID(), dto), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.update(studentID, dto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{studentID}")
     public ResponseEntity<Student> delete(@PathVariable String studentID) {
-        try {
-            Student existStudent = service.get(studentID);
-            return new ResponseEntity<>(service.delete(existStudent.getStudentID()), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.delete(studentID), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "approve a student, must include reason for refuse request")
+    @PostMapping("/approve/{studentID}")
+    public ResponseEntity<Student> delete(@PathVariable String studentID, @Valid @RequestBody ApproveStudentDTO approveStudentDTO) {
+        return new ResponseEntity<>(service.approveStudent(studentID, approveStudentDTO), HttpStatus.OK);
     }
 }

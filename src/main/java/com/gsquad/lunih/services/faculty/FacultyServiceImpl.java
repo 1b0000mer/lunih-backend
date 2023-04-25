@@ -47,12 +47,7 @@ public class FacultyServiceImpl implements FacultyService {
         //get locale code (en, lv)
         Locale locale = LocaleContextHolder.getLocale();
 
-//        return facultyRepo.findById(id).orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.faculty.id-notfound", null , locale),id)));
-        if (facultyRepo.findById(id).isPresent()) {
-            return facultyRepo.findById(id).get();
-        } else {
-            throw new NotFoundException(String.format(messageSource.getMessage("error.faculty.id-notfound", null , locale),id));
-        }
+        return facultyRepo.findById(id).orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.faculty.id-notfound", null , locale),id)));
     }
 
     @Override

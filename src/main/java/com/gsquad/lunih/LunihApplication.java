@@ -1,33 +1,32 @@
 package com.gsquad.lunih;
 
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
-import com.gsquad.lunih.dtos.demo.ProductDTO;
+import com.gsquad.lunih.dtos.student.ApproveStudentDTO;
+import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.repos.AccountRepo;
-import com.gsquad.lunih.repos.demo.ProductRepo;
 import com.gsquad.lunih.services.account.AccountService;
-import com.gsquad.lunih.services.demo.product.ProductService;
+import com.gsquad.lunih.services.student.StudentService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import java.util.Date;
+
 @SpringBootApplication
 @EnableAsync
 public class LunihApplication implements CommandLineRunner {
-
-    private final ProductRepo productRepo;
-
-    private final ProductService productService;
 
     private final AccountRepo accountRepo;
 
     private final AccountService accountService;
 
-    public LunihApplication(ProductRepo productRepo, ProductService productService, AccountRepo accountRepo, AccountService accountService) {
-        this.productRepo = productRepo;
-        this.productService = productService;
+    private final StudentService studentService;
+
+    public LunihApplication(AccountRepo accountRepo, AccountService accountService, StudentService studentService) {
         this.accountRepo = accountRepo;
         this.accountService = accountService;
+        this.studentService = studentService;
     }
 
     public static void main(String[] args) {
@@ -40,20 +39,29 @@ public class LunihApplication implements CommandLineRunner {
     }
 
     private void initData() {
-        if (productRepo.count() == 0) {
-            ProductDTO dto = new ProductDTO();
-            dto.setName("test1");
-            dto.setPrice(500);
-            productService.create(dto);
-        }
-
         if (accountRepo.count() == 0) {
+            Date bday = new Date();
             StudentAccountDTO dto = new StudentAccountDTO();
             dto.setEmail("thienquoc98@gmail.com");
             dto.setPassword("123456");
             dto.setStudentID("22021P");
             dto.setFirstName("Thien Quoc");
             dto.setSurName("Nguyen");
+            dto.setGender(false);
+            dto.setBirthDay(bday);
+            dto.setPhoneNumber("+37199999999");
+            accountService.createNewStudent(dto);
+            ApproveStudentDTO approveStudentDTO = new ApproveStudentDTO(true, "");
+            studentService.approveStudent("22021P", approveStudentDTO);
+
+            dto.setEmail("test@gmail.com");
+            dto.setPassword("123456");
+            dto.setStudentID("22022P");
+            dto.setFirstName("Test Quoc");
+            dto.setSurName("Nguyen");
+            dto.setGender(true);
+            dto.setBirthDay(bday);
+            dto.setPhoneNumber("+37199999999");
             accountService.createNewStudent(dto);
         }
     }
