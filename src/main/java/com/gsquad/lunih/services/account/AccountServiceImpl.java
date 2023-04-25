@@ -11,8 +11,11 @@ import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.AccountRepo;
 import com.gsquad.lunih.repos.StudentRepo;
 import com.gsquad.lunih.utils.EnumRole;
+import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -31,6 +34,13 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepo = accountRepo;
         this.studentRepo = studentRepo;
         this.messageSource = messageSource;
+    }
+
+    @Override
+    public Page<Account> listAllPaging(String search, int page, int size, String sort, String column) {
+        Pageable pageable = PageUtils.createPageable(page, size, sort, column);
+
+        return accountRepo.getAllAccountPaging(search, pageable);
     }
 
     @Override

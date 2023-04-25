@@ -4,6 +4,7 @@ import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.entities.Account;
 import com.gsquad.lunih.services.account.AccountService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,18 @@ public class AccountController {
 
     public AccountController(AccountService service) {
         this.service = service;
+    }
+
+    @ApiOperation(value = "list all account with paging and status=true")
+    @GetMapping("/paging")
+    public ResponseEntity<Page<Account>> listAllPaging(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "page", required = false, defaultValue = "${paging.default.page}") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "${paging.default.size}")int size,
+            @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
+            @RequestParam(value = "column", required = false, defaultValue = "id") String column
+    ) {
+        return new ResponseEntity<>(service.listAllPaging(search, page, size, sort, column), HttpStatus.OK);
     }
 
     @GetMapping
