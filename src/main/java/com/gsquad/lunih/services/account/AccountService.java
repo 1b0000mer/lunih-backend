@@ -1,5 +1,6 @@
 package com.gsquad.lunih.services.account;
 
+import com.gsquad.lunih.dtos.accountDTO.ChangePasswordDTO;
 import com.gsquad.lunih.dtos.accountDTO.CompanyAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
@@ -16,5 +17,7 @@ public interface AccountService {
     Account createNewStudent(StudentAccountDTO dto);
     Account createNewCompany(CompanyAccountDTO dto);
     Account createNewUniversity(UniversityAccountDTO dto);
+
+    Account changePassword(int id, ChangePasswordDTO changePasswordDTO);
 
 }

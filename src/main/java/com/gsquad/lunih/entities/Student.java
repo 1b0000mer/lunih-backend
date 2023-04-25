@@ -48,6 +48,10 @@ public class Student {
     @ApiModelProperty(value = "approved by admin/university?")
     private Boolean approved = null;
 
+    @Column(length = 100)
+    @JsonIgnore
+    private String reason;
+
 //    @OneToMany
 //    private List<Post> appliedPost = new ArrayList<>();
 

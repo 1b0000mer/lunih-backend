@@ -3,6 +3,7 @@ package com.gsquad.lunih.controllers;
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.entities.Account;
 import com.gsquad.lunih.services.account.AccountService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,22 +28,16 @@ public class AccountController {
         return new ResponseEntity<>(service.listAll(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Get Account by id")
     @GetMapping("/{id}")
     public ResponseEntity<Account> getById(@PathVariable int id) {
-        try {
-            Account account = service.get(id);
-            return new ResponseEntity<>(account, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.get(id), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Create new Student Account")
     @PostMapping("/student")
     public ResponseEntity<Account> createNewStudent(@Valid @RequestBody StudentAccountDTO dto) {
-        try {
-            return new ResponseEntity<>(service.createNewStudent(dto), HttpStatus.OK);
-        } catch (ValidationException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(service.createNewStudent(dto), HttpStatus.OK);
     }
+
 }
