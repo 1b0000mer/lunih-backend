@@ -1,7 +1,6 @@
 # LUNIH-backend
 ## _Java 8 + SPRING BOOT RESTful API + MySQL_
 
----
 
 ### Tech Requirements
 
@@ -37,9 +36,10 @@ server.port=8080
 To be updated.
 
 ### Development
-Create your own branch and start coding.
-Make changes in your file, commit, push on your branch.
-Create a merge request to master.
----
-## License
+
+- Create your own branch and start coding.
+- Make changes in your file, commit, push on your branch.
+- Create a merge request to master.
+
+### License
 To be updated.
