@@ -1,15 +1,14 @@
 package com.gsquad.lunih.services.account;
 
-import com.gsquad.lunih.dtos.accountDTO.ChangePasswordDTO;
-import com.gsquad.lunih.dtos.accountDTO.CompanyAccountDTO;
-import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
-import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
+import com.gsquad.lunih.dtos.accountDTO.*;
 import com.gsquad.lunih.entities.Account;
 import com.gsquad.lunih.entities.Student;
+import com.gsquad.lunih.entities.University;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.AccountRepo;
 import com.gsquad.lunih.repos.StudentRepo;
+import com.gsquad.lunih.repos.UniversityRepo;
 import com.gsquad.lunih.utils.EnumRole;
 import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
@@ -28,11 +27,13 @@ import java.util.Locale;
 public class AccountServiceImpl implements AccountService {
     private final AccountRepo accountRepo;
     private final StudentRepo studentRepo;
+    private final UniversityRepo universityRepo;
     private final MessageSource messageSource;
 
-    public AccountServiceImpl(AccountRepo accountRepo, StudentRepo studentRepo, MessageSource messageSource) {
+    public AccountServiceImpl(AccountRepo accountRepo, StudentRepo studentRepo, UniversityRepo universityRepo, MessageSource messageSource) {
         this.accountRepo = accountRepo;
         this.studentRepo = studentRepo;
+        this.universityRepo = universityRepo;
         this.messageSource = messageSource;
     }
 
@@ -117,13 +118,68 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account createNewCompany(CompanyAccountDTO dto) {
+
         return null;
     }
 
     @Override
     public Account createNewUniversity(UniversityAccountDTO dto) {
-        return null;
+        Locale locale = LocaleContextHolder.getLocale();
+
+        if (ObjectUtils.isEmpty(dto.getEmail())) {
+            throw new InvalidException(messageSource.getMessage("error.account.email-empty", null, locale));
+        }
+
+        if (ObjectUtils.isEmpty(dto.getPassword())) {
+            throw new InvalidException(messageSource.getMessage("error.account.password-empty", null, locale));
+        }
+
+        if (ObjectUtils.isEmpty(dto.getName())) {
+            throw new InvalidException(messageSource.getMessage("error.university.name-empty", null, locale));
+        }
+
+        Account acc = new Account();
+        acc.setEmail(dto.getEmail());
+        acc.setPassword(dto.getPassword());
+        acc.setRole(EnumRole.ROLE_UNIVERSITY.name());
+        accountRepo.save(acc);
+
+        University university = new University();
+        university.setAccount(acc);
+        university.setName(dto.getName());
+
+        if (!ObjectUtils.isEmpty(dto.getAddress())) {
+            university.setAddress(dto.getAddress());
+        }
+
+        if (!ObjectUtils.isEmpty(dto.getPhoneNumber())) {
+            university.setPhoneNumber(dto.getPhoneNumber());
+        }
+
+        universityRepo.save(university);
+        return acc;
     }
+
+//    @Override
+//    public Account createNewAdmin(AdminAccountDTO dto) {
+//        Locale locale = LocaleContextHolder.getLocale();
+//
+//        if (ObjectUtils.isEmpty(dto.getEmail())) {
+//            throw new InvalidException(messageSource.getMessage("error.account.email-empty", null, locale));
+//        }
+//
+//        if (ObjectUtils.isEmpty(dto.getPassword())) {
+//            throw new InvalidException(messageSource.getMessage("error.account.password-empty", null, locale));
+//        }
+//
+//        Account acc = new Account();
+//        acc.setEmail(dto.getEmail());
+//        acc.setPassword(dto.getPassword());
+//        acc.setRole(EnumRole.ROLE_ADMIN.name());
+//        accountRepo.save(acc);
+//
+//        return acc;
+//    }
 
     @Override
     public Account changePassword(int id, ChangePasswordDTO changePasswordDTO) {
