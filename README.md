@@ -18,7 +18,7 @@ CREATE SCHEMA `lunih` ;
 - Clone this repository.
 - Resolve any missing dependencies.
 - Change connection authentication with your confidential on src/main/resources/application.properties.
-```javascript
+```java
 spring.datasource.username=<username>
 spring.datasource.password=<password>
 ```
