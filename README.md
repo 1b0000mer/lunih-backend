@@ -1,4 +1,3 @@
-# LUNIH-backend
 ## _Java 8 + SPRING BOOT RESTful API + MySQL_
 
 
@@ -28,7 +27,6 @@ spring.datasource.password=<password>
 server.port=8080
 ```
 - In case you're using IntelliJ IDEA community edition, edit your Run/Debug [configuration](https://stackoverflow.com/a/72956557).
-- The default port of the project is 8080, 
 - Run/Debug the project.
 - To access SwaggerUI, open your browser and go to: http://localhost:8080/
 
