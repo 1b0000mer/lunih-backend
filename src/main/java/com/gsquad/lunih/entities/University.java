@@ -22,7 +22,10 @@ public class University {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @OneToOne(
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true
+    )
     private Account account;
 
     private String name;
