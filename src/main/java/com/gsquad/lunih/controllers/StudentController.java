@@ -11,10 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.security.Principal;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/rest/student")
@@ -56,11 +54,13 @@ public class StudentController {
         return new ResponseEntity<>(service.getCurrent(principal), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "update student by studentID")
     @PutMapping("/{studentID}")
     public ResponseEntity<Student> update(@PathVariable String studentID, @Valid @RequestBody StudentAccountDTO dto) {
         return new ResponseEntity<>(service.update(studentID, dto), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "delete student by studentID")
     @DeleteMapping("/{studentID}")
     public ResponseEntity<Student> delete(@PathVariable String studentID) {
         return new ResponseEntity<>(service.delete(studentID), HttpStatus.OK);

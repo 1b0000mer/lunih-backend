@@ -119,7 +119,7 @@ public class StudentServiceImpl implements StudentService {
                 throw new InvalidException(messageSource.getMessage("error.approve.reason-empty", null, locale));
             }
             student.setReason(approveStudentDTO.getReason());
-            // TODO send mail
+            // TODO: send mail
         }
 
         studentRepo.save(student);

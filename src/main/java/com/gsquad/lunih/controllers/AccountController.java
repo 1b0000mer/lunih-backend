@@ -1,6 +1,7 @@
 package com.gsquad.lunih.controllers;
 
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
+import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
 import com.gsquad.lunih.entities.Account;
 import com.gsquad.lunih.services.account.AccountService;
 import io.swagger.annotations.ApiOperation;
@@ -10,9 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/rest/account")
@@ -51,6 +50,12 @@ public class AccountController {
     @PostMapping("/student")
     public ResponseEntity<Account> createNewStudent(@Valid @RequestBody StudentAccountDTO dto) {
         return new ResponseEntity<>(service.createNewStudent(dto), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Create new University Account")
+    @PostMapping("/university")
+    public ResponseEntity<Account> createNewUniversity(@Valid @RequestBody UniversityAccountDTO dto) {
+        return new ResponseEntity<>(service.createNewUniversity(dto), HttpStatus.OK);
     }
 
 }
