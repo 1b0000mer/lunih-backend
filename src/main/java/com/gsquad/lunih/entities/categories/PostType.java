@@ -20,7 +20,10 @@ public class PostType {
     private int id;
 
     @Column(nullable = false, length = 50)
-    private String name;
+    private String nameEn;
+
+    @Column(nullable = false, length = 50)
+    private String nameLv;
 
     private Boolean status = true;
 }
