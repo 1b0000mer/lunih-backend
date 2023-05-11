@@ -1,13 +1,16 @@
 package com.gsquad.lunih.repos;
 
 import com.gsquad.lunih.entities.Company;
-import com.gsquad.lunih.entities.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface CompanyRepo extends JpaRepository<Company, Integer> {
+
+    Optional<Company> findByAccount_Id(int id);
 
     @Query(
             value = "SELECT * FROM Company s " +
