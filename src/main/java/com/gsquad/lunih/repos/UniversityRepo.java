@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface UniversityRepo extends JpaRepository<University, Integer> {
 
     @Query(
@@ -16,4 +18,5 @@ public interface UniversityRepo extends JpaRepository<University, Integer> {
     )
     Page<University> getAllUniversityPaging(String search, Pageable pageable);
 
+    Optional<University> findByAccount_Id(int id);
 }

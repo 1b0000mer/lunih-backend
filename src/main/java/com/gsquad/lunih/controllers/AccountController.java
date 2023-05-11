@@ -1,5 +1,7 @@
 package com.gsquad.lunih.controllers;
 
+import com.gsquad.lunih.dtos.accountDTO.AdminAccountDTO;
+import com.gsquad.lunih.dtos.accountDTO.ChangePasswordDTO;
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
 import com.gsquad.lunih.entities.Account;
@@ -58,4 +60,21 @@ public class AccountController {
         return new ResponseEntity<>(service.createNewUniversity(dto), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Create new Admin Account")
+    @PostMapping("/admin")
+    public ResponseEntity<Account> createNewAdmin(@Valid @RequestBody AdminAccountDTO dto) {
+        return new ResponseEntity<>(service.createNewAdmin(dto), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Change password Account")
+    @PutMapping("/change-password/{id}")
+    public ResponseEntity<Account> createNewAdmin(@PathVariable int id, @Valid @RequestBody ChangePasswordDTO dto) {
+        return new ResponseEntity<>(service.changePassword(id, dto), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Change status Account")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Account> changeStatus(@PathVariable int id) {
+        return new ResponseEntity<>(service.changeStatus(id), HttpStatus.OK);
+    }
 }

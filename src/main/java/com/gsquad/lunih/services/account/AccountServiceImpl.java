@@ -4,11 +4,13 @@ import com.gsquad.lunih.dtos.accountDTO.*;
 import com.gsquad.lunih.entities.Account;
 import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.entities.University;
+import com.gsquad.lunih.entities.categories.Program;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.AccountRepo;
 import com.gsquad.lunih.repos.StudentRepo;
 import com.gsquad.lunih.repos.UniversityRepo;
+import com.gsquad.lunih.services.program.ProgramService;
 import com.gsquad.lunih.utils.EnumRole;
 import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,12 +30,14 @@ import java.util.Locale;
 public class AccountServiceImpl implements AccountService {
     private final AccountRepo accountRepo;
     private final StudentRepo studentRepo;
+    private final ProgramService programService;
     private final UniversityRepo universityRepo;
     private final MessageSource messageSource;
 
-    public AccountServiceImpl(AccountRepo accountRepo, StudentRepo studentRepo, UniversityRepo universityRepo, MessageSource messageSource) {
+    public AccountServiceImpl(AccountRepo accountRepo, StudentRepo studentRepo, ProgramService programService, UniversityRepo universityRepo, MessageSource messageSource) {
         this.accountRepo = accountRepo;
         this.studentRepo = studentRepo;
+        this.programService = programService;
         this.universityRepo = universityRepo;
         this.messageSource = messageSource;
     }
@@ -148,6 +153,10 @@ public class AccountServiceImpl implements AccountService {
         university.setAccount(acc);
         university.setName(dto.getName());
 
+        List<Program> programList = new ArrayList<>();
+        dto.getProgramList().forEach(programID -> programList.add(programService.get(programID)));
+        university.setProgramList(programList);
+
         if (!ObjectUtils.isEmpty(dto.getAddress())) {
             university.setAddress(dto.getAddress());
         }
@@ -160,29 +169,58 @@ public class AccountServiceImpl implements AccountService {
         return acc;
     }
 
-//    @Override
-//    public Account createNewAdmin(AdminAccountDTO dto) {
-//        Locale locale = LocaleContextHolder.getLocale();
-//
-//        if (ObjectUtils.isEmpty(dto.getEmail())) {
-//            throw new InvalidException(messageSource.getMessage("error.account.email-empty", null, locale));
-//        }
-//
-//        if (ObjectUtils.isEmpty(dto.getPassword())) {
-//            throw new InvalidException(messageSource.getMessage("error.account.password-empty", null, locale));
-//        }
-//
-//        Account acc = new Account();
-//        acc.setEmail(dto.getEmail());
-//        acc.setPassword(dto.getPassword());
-//        acc.setRole(EnumRole.ROLE_ADMIN.name());
-//        accountRepo.save(acc);
-//
-//        return acc;
-//    }
+    @Override
+    public Account createNewAdmin(AdminAccountDTO dto) {
+        Locale locale = LocaleContextHolder.getLocale();
+
+        if (ObjectUtils.isEmpty(dto.getEmail())) {
+            throw new InvalidException(messageSource.getMessage("error.account.email-empty", null, locale));
+        }
+
+        if (ObjectUtils.isEmpty(dto.getPassword())) {
+            throw new InvalidException(messageSource.getMessage("error.account.password-empty", null, locale));
+        }
+
+        Account acc = new Account();
+        acc.setEmail(dto.getEmail());
+        acc.setPassword(dto.getPassword());
+        acc.setRole(EnumRole.ROLE_ADMIN.name());
+
+        accountRepo.save(acc);
+        return acc;
+    }
 
     @Override
     public Account changePassword(int id, ChangePasswordDTO changePasswordDTO) {
-        return null;
+        Locale locale = LocaleContextHolder.getLocale();
+
+        Account account = get(id);
+        String oldPass = changePasswordDTO.getOldPass();
+        String newPass = changePasswordDTO.getNewPass();
+
+        if (ObjectUtils.isEmpty(oldPass)) {
+            throw new InvalidException(messageSource.getMessage("error.account.oldpassword-empty", null, locale));
+        }
+
+        if (ObjectUtils.isEmpty(newPass)) {
+            throw new InvalidException(messageSource.getMessage("error.account.newpassword-empty", null, locale));
+        }
+
+        if (!oldPass.equals(account.getPassword())) {
+            throw new InvalidException(messageSource.getMessage("error.account.oldpass-notmatch", null, locale));
+        }
+
+        account.setPassword(newPass);
+        accountRepo.save(account);
+
+        return account;
+    }
+
+    @Override
+    public Account changeStatus(int id) {
+        Account account = get(id);
+
+        account.setStatus(!account.getStatus());
+        return account;
     }
 }

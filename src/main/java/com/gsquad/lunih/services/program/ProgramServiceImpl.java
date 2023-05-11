@@ -84,7 +84,7 @@ public class ProgramServiceImpl implements ProgramService {
         program.setFaculty(facultyService.get(dto.getFacultyID()));
 
         List<Industry> industryList = new ArrayList<>();
-        dto.getSpectrumList().forEach(spectrumID -> industryList.add(industryService.get(spectrumID)));
+        dto.getIndustryList().forEach(industryID -> industryList.add(industryService.get(industryID)));
         program.setIndustryList(industryList);
         program.setStatus(true);
 
@@ -119,7 +119,7 @@ public class ProgramServiceImpl implements ProgramService {
         program.setStudyLevel(dto.getStudyLevel());
         program.setFaculty(facultyService.get(dto.getFacultyID()));
         List<Industry> industryList = new ArrayList<>();
-        dto.getSpectrumList().forEach(spectrumID -> industryList.add(industryService.get(spectrumID)));
+        dto.getIndustryList().forEach(industryID -> industryList.add(industryService.get(industryID)));
         program.setIndustryList(industryList);
 
         programRepo.save(program);

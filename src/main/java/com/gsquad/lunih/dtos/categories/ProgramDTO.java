@@ -14,6 +14,6 @@ public class ProgramDTO {
 
     private String studyLevel;
     private int facultyID;
-    private List<Integer> spectrumList = new ArrayList<>();
+    private List<Integer> industryList = new ArrayList<>();
 
 }
