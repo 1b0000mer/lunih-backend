@@ -18,5 +18,7 @@ public interface PostService {
 
     Post update(int id, PostDTO dto);
 
+    Post changeStatus(int id);
+
     Post delete(int id);
 }
