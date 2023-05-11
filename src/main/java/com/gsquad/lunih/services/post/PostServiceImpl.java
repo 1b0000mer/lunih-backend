@@ -5,6 +5,7 @@ import com.gsquad.lunih.entities.Post;
 import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.repos.PostRepo;
 import com.gsquad.lunih.services.student.StudentService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,26 +26,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Page<Post> listAllPaging(String search, int page, int size, String sort, String column) {
+        return null;
+    }
+
+    @Override
     public List<Post> listAll() {
-        return postRepo.findAll();
+        return null;
     }
 
     @Override
     public Post get(int id) {
-        return postRepo.findById(id).get();
+        return null;
     }
 
     @Override
     public Post create(PostDTO dto) {
-        Post post = new Post();
-        List<Student> studentList = new ArrayList<>();
-        dto.getStudentList().forEach(studentID -> studentList.add(
-                studentService.get(studentID)
-        ));
-
-        post.setStudentList(studentList);
-        postRepo.save(post);
-        return post;
+        return null;
     }
 
     @Override

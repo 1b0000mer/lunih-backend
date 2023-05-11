@@ -71,6 +71,7 @@ public class UniversityServiceImpl implements UniversityService {
 //            throw new InvalidException(messageSource.getMessage("error.university.phoneNumber-empty", null, locale));
 //        }
 
+        //nullable
         university.setName(dto.getName());
         university.setAddress(dto.getAddress());
         university.setPhoneNumber(dto.getPhoneNumber());

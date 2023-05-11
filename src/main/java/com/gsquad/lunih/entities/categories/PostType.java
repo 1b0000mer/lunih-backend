@@ -1,5 +1,6 @@
 package com.gsquad.lunih.entities.categories;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,12 @@ public class PostType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 50)
+    @ApiModelProperty(name = "name of Post Type in English")
+    @Column(nullable = false)
     private String nameEn;
 
-    @Column(nullable = false, length = 50)
+    @ApiModelProperty(name = "name of Post Type in English")
+    @Column(nullable = false)
     private String nameLv;
 
     private Boolean status = true;

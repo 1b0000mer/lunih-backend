@@ -2,7 +2,7 @@ package com.gsquad.lunih.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gsquad.lunih.entities.categories.PostType;
-import com.gsquad.lunih.entities.categories.Spectrum;
+import com.gsquad.lunih.entities.categories.Industry;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
 
     @Id
@@ -30,14 +34,20 @@ public class Post {
     @OneToOne
     private PostType postType;
 
-    @Column(nullable = false, length = 80)
-    private String title;
+    @Column(nullable = false)
+    private String titleEn;
+
+    @Column(nullable = false)
+    private String titleLv;
 
     @Column(nullable = false, length = 500)
-    private String description;
+    private String descriptionEn;
+
+    @Column(nullable = false, length = 500)
+    private String descriptionLv;
 
     @OneToMany
-    private List<Spectrum> spectrumList = new ArrayList<>();
+    private List<Industry> industryList = new ArrayList<>();
 
     @Column(nullable = false)
     private Date startDate;
@@ -73,4 +83,7 @@ public class Post {
     @JsonIgnore
     @CreatedBy
     private String createdBy;
+
+//    @LastModifiedDate
+//    @LastModifiedBy
 }

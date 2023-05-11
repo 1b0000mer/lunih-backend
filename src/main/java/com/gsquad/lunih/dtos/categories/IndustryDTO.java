@@ -5,8 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SpectrumDTO {
+public class IndustryDTO {
 
-    private String name;
+    private String nameEn;
 
+    private String nameLv;
 }
