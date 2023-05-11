@@ -76,4 +76,11 @@ public class Company {
     @JsonIgnore
     @CreatedBy
     private String createdBy;
+
+    @ApiModelProperty(value = "approved by admin/university?")
+    private Boolean approved = null;
+
+    @Column(length = 100)
+    @JsonIgnore
+    private String reason;
 }

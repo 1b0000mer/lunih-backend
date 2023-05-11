@@ -2,6 +2,7 @@ package com.gsquad.lunih.controllers;
 
 import com.gsquad.lunih.dtos.accountDTO.AdminAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.ChangePasswordDTO;
+import com.gsquad.lunih.dtos.accountDTO.CompanyAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
 import com.gsquad.lunih.entities.Account;
@@ -77,4 +78,10 @@ public class AccountController {
     public ResponseEntity<Account> changeStatus(@PathVariable int id) {
         return new ResponseEntity<>(service.changeStatus(id), HttpStatus.OK);
     }
+    @ApiOperation(value = "Create new Company Account")
+    @PostMapping("/company")
+    public ResponseEntity<Account> createNewCompany(@Valid @RequestBody CompanyAccountDTO dto) {
+        return new ResponseEntity<>(service.createNewCompany(dto), HttpStatus.OK);
+    }
+
 }
