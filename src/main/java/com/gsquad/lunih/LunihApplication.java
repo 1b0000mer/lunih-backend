@@ -9,7 +9,6 @@ import com.gsquad.lunih.dtos.categories.IndustryDTO;
 import com.gsquad.lunih.dtos.categories.PostTypeDTO;
 import com.gsquad.lunih.dtos.categories.ProgramDTO;
 import com.gsquad.lunih.dtos.student.ApproveStudentDTO;
-import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.repos.AccountRepo;
 import com.gsquad.lunih.repos.CompanyRepo;
 import com.gsquad.lunih.repos.StudentRepo;
@@ -19,6 +18,7 @@ import com.gsquad.lunih.repos.categories.IndustryRepo;
 import com.gsquad.lunih.repos.categories.PostTypeRepo;
 import com.gsquad.lunih.repos.categories.ProgramRepo;
 import com.gsquad.lunih.services.account.AccountService;
+import com.gsquad.lunih.services.company.CompanyService;
 import com.gsquad.lunih.services.faculty.FacultyService;
 import com.gsquad.lunih.services.industry.IndustryService;
 import com.gsquad.lunih.services.post_type.PostTypeService;
@@ -43,37 +43,31 @@ public class LunihApplication implements CommandLineRunner {
 
     private final AccountRepo accountRepo;
     private final AccountService accountService;
-
     private final StudentRepo studentRepo;
     private final StudentService studentService;
-
     private final CompanyRepo companyRepo;
-//    private final CompanyService companyService;
-
+    private final CompanyService companyService;
     private final UniversityRepo universityRepo;
     private final UniversityService universityService;
-
     private final FacultyRepo facultyRepo;
     private final FacultyService facultyService;
-
     private final IndustryRepo industryRepo;
     private final IndustryService industryService;
-
     private final PostTypeRepo postTypeRepo;
     private final PostTypeService postTypeService;
-
     private final ProgramRepo programRepo;
     private final ProgramService programService;
 
     @Value("${default.password}")
     private String defaultPassword;
 
-    public LunihApplication(AccountRepo accountRepo, AccountService accountService, StudentRepo studentRepo, StudentService studentService, CompanyRepo companyRepo, UniversityRepo universityRepo, UniversityService universityService, FacultyRepo facultyRepo, FacultyService facultyService, IndustryRepo industryRepo, IndustryService industryService, PostTypeRepo postTypeRepo, PostTypeService postTypeService, ProgramRepo programRepo, ProgramService programService) {
+    public LunihApplication(AccountRepo accountRepo, AccountService accountService, StudentRepo studentRepo, StudentService studentService, CompanyRepo companyRepo, CompanyService companyService, UniversityRepo universityRepo, UniversityService universityService, FacultyRepo facultyRepo, FacultyService facultyService, IndustryRepo industryRepo, IndustryService industryService, PostTypeRepo postTypeRepo, PostTypeService postTypeService, ProgramRepo programRepo, ProgramService programService) {
         this.accountRepo = accountRepo;
         this.accountService = accountService;
         this.studentRepo = studentRepo;
         this.studentService = studentService;
         this.companyRepo = companyRepo;
+        this.companyService = companyService;
         this.universityRepo = universityRepo;
         this.universityService = universityService;
         this.facultyRepo = facultyRepo;
@@ -102,31 +96,24 @@ public class LunihApplication implements CommandLineRunner {
         if (studentRepo.count() == 0) {
             createStudent();
         }
-
         if (facultyRepo.count() == 0) {
             createFaculty();
         }
-
         if (industryRepo.count() == 0) {
             createIndustry();
         }
-
         if (programRepo.count() == 0) {
             createProgram();
         }
-
         if (universityRepo.count() == 0) {
             createUniversity();
         }
-
         if (companyRepo.count() == 0) {
-//            createCompany();
+            createCompany();
         }
-
         if (postTypeRepo.count() == 0) {
             createPostType();
         }
-
     }
 
     private void createPostType() {

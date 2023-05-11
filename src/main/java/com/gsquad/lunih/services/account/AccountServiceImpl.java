@@ -40,7 +40,7 @@ public class AccountServiceImpl implements AccountService {
     private final CompanyRepo companyRepo;
     private final MessageSource messageSource;
 
-    public AccountServiceImpl(AccountRepo accountRepo, StudentRepo studentRepo, UniversityRepo universityRepo, IndustryService industryService, CompanyRepo companyRepo, MessageSource messageSource) {
+    public AccountServiceImpl(AccountRepo accountRepo, StudentRepo studentRepo, UniversityRepo universityRepo, ProgramService programService, IndustryService industryService, CompanyRepo companyRepo, MessageSource messageSource) {
         this.accountRepo = accountRepo;
         this.studentRepo = studentRepo;
         this.programService = programService;
