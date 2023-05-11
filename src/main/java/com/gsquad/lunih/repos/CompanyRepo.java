@@ -11,7 +11,7 @@ public interface CompanyRepo extends JpaRepository<Company, Integer> {
 
     @Query(
             value = "SELECT * FROM Company s " +
-                    "WHERE s.companyID like %?1% OR (s.name like %?1%)",
+                    "WHERE s.id like %?1% OR (s.companyName like %?1% OR s.companyContactPersonName like %?1%)",
             countQuery = "SELECT count(*) FROM Company",
             nativeQuery = true
     )

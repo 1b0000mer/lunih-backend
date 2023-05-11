@@ -2,13 +2,17 @@ package com.gsquad.lunih.services.account;
 
 import com.gsquad.lunih.dtos.accountDTO.*;
 import com.gsquad.lunih.entities.Account;
+import com.gsquad.lunih.entities.Company;
 import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.entities.University;
+import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.AccountRepo;
+import com.gsquad.lunih.repos.CompanyRepo;
 import com.gsquad.lunih.repos.StudentRepo;
 import com.gsquad.lunih.repos.UniversityRepo;
+import com.gsquad.lunih.services.industry.IndustryService;
 import com.gsquad.lunih.utils.EnumRole;
 import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,12 +33,18 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepo accountRepo;
     private final StudentRepo studentRepo;
     private final UniversityRepo universityRepo;
+
+    private final IndustryService industryService;
+
+    private final CompanyRepo companyRepo;
     private final MessageSource messageSource;
 
-    public AccountServiceImpl(AccountRepo accountRepo, StudentRepo studentRepo, UniversityRepo universityRepo, MessageSource messageSource) {
+    public AccountServiceImpl(AccountRepo accountRepo, StudentRepo studentRepo, UniversityRepo universityRepo, IndustryService industryService, CompanyRepo companyRepo, MessageSource messageSource) {
         this.accountRepo = accountRepo;
         this.studentRepo = studentRepo;
         this.universityRepo = universityRepo;
+        this.industryService = industryService;
+        this.companyRepo = companyRepo;
         this.messageSource = messageSource;
     }
 
@@ -118,8 +129,76 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account createNewCompany(CompanyAccountDTO dto) {
+        Locale locale = LocaleContextHolder.getLocale();
 
-        return null;
+        if (ObjectUtils.isEmpty(dto.getEmail())) {
+            throw new InvalidException(messageSource.getMessage("error.account.email-empty", null, locale));
+        }
+
+        if (ObjectUtils.isEmpty(dto.getPassword())) {
+            throw new InvalidException(messageSource.getMessage("error.account.password-empty", null, locale));
+        }
+
+        if (ObjectUtils.isEmpty(dto.getCompanyName())) {
+            throw new InvalidException(messageSource.getMessage("error.company.name-empty", null, locale));
+        }
+
+        Account acc = new Account();
+        acc.setEmail(dto.getEmail());
+        acc.setPassword(dto.getPassword());
+        acc.setRole(EnumRole.ROLE_COMPANY.name());
+        accountRepo.save(acc);
+
+        Company company = new Company();
+        company.setAccount(acc);
+        company.setCompanyName(dto.getCompanyName());
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyDescription())) {
+            company.setCompanyDescription(dto.getCompanyDescription());
+        }
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyType())) {
+            company.setCompanyType(dto.getCompanyType());
+        }
+
+        List<Industry> industryList = new ArrayList<>();
+        dto.getIndustryList().forEach(industryID -> industryList.add(industryService.get(industryID)));
+        company.setIndustryList(industryList);
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyAddress())) {
+            company.setCompanyAddress(dto.getCompanyAddress());
+        }
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyWebsite())) {
+            company.setCompanyWebsite(dto.getCompanyWebsite());
+        }
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyLogo())) {
+            company.setCompanyLogo(dto.getCompanyLogo());
+        }
+
+        if (ObjectUtils.isEmpty(dto.getCompanyContactPersonName())) {
+            throw new InvalidException(messageSource.getMessage("error.company.personname-empty", null, locale));
+        }
+
+        company.setCompanyContactPersonName(dto.getCompanyContactPersonName());
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyContactPersonTitle())) {
+            company.setCompanyContactPersonTitle(dto.getCompanyContactPersonTitle());
+        }
+
+        if (ObjectUtils.isEmpty(dto.getCompanyContactPersonEmail())) {
+            company.setCompanyContactPersonEmail(dto.getEmail());
+        } else {
+            company.setCompanyContactPersonEmail(dto.getCompanyContactPersonEmail());
+        }
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyContactPersonPhoneNumber())) {
+            company.setCompanyContactPersonPhoneNumber(dto.getCompanyContactPersonPhoneNumber());
+        }
+
+        companyRepo.save(company);
+        return acc;
     }
 
     @Override

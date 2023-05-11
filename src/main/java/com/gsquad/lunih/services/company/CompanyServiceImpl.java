@@ -3,9 +3,11 @@ package com.gsquad.lunih.services.company;
 import com.gsquad.lunih.dtos.accountDTO.CompanyAccountDTO;
 import com.gsquad.lunih.dtos.company.ApproveCompanyDTO;
 import com.gsquad.lunih.entities.Company;
+import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.CompanyRepo;
+import com.gsquad.lunih.services.industry.IndustryService;
 import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -16,6 +18,7 @@ import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,10 +27,13 @@ import java.util.Locale;
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepo companyRepo;
+
+    private final IndustryService industryService;
     private final MessageSource messageSource;
 
-    public CompanyServiceImpl(CompanyRepo companyRepo, MessageSource messageSource) {
+    public CompanyServiceImpl(CompanyRepo companyRepo, IndustryService industryService, MessageSource messageSource) {
         this.companyRepo = companyRepo;
+        this.industryService = industryService;
         this.messageSource = messageSource;
     }
 
@@ -61,51 +67,51 @@ public class CompanyServiceImpl implements CompanyService {
 
         Company company = get(companyID);
 
-//        if (ObjectUtils.isEmpty(dto.getStudentID())) {
-//            throw new InvalidException(messageSource.getMessage("error.student.studentID-empty", null, locale));
-//        }
-
-        if (ObjectUtils.isEmpty(dto.getCompanyName())) {
-            throw new InvalidException(messageSource.getMessage("error.company.companyName-empty", null, locale));
-        }
-
-        if (ObjectUtils.isEmpty(dto.getCompanyPersonName())) {
-            throw new InvalidException(messageSource.getMessage("error.company.companyPersonName-empty", null, locale));
-        }
-
-//        //check exist
-//        if (studentRepo.existsById(dto.getStudentID())) {
-//            throw new InvalidException(String.format(messageSource.getMessage("error.student.studentID-exist", null, locale), dto.getStudentID()));
-//        }
-
-//        company.setStudentID(dto.getStudentID());
         company.setCompanyName(dto.getCompanyName());
-        company.setCompanyPersonName(dto.getCompanyPersonName());
 
-        /*if (!ObjectUtils.isEmpty(dto.getBirthDay())) {
-            student.setBirthDay(dto.getBirthDay());
+        if (!ObjectUtils.isEmpty(dto.getCompanyDescription())) {
+            company.setCompanyDescription(dto.getCompanyDescription());
         }
 
-        if (!ObjectUtils.isEmpty(dto.getGender())) {
-            student.setGender(dto.getGender());
-        }*/
-
-        if (!ObjectUtils.isEmpty(dto.getPhoneNumber())) {
-            company.setPhoneNumber(dto.getPhoneNumber());
-        }
-        if (!ObjectUtils.isEmpty(dto.getAddress())) {
-            company.setAddress(dto.getAddress());
+        if (!ObjectUtils.isEmpty(dto.getCompanyType())) {
+            company.setCompanyType(dto.getCompanyType());
         }
 
-//        //if change email
-//        if (!dto.getEmail().equals(student.getAccount().getEmail())) {
-//            student.getAccount().setEmail(dto.getEmail());
-//        }
-//
-//        //if change password
-//        if (!dto.getPassword().equals(student.getAccount().getPassword())) {
-//            student.getAccount().setPassword(dto.getPassword());
-//        }
+        List<Industry> industryList = new ArrayList<>();
+        dto.getIndustryList().forEach(industryID -> industryList.add(industryService.get(industryID)));
+        company.setIndustryList(industryList);
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyAddress())) {
+            company.setCompanyAddress(dto.getCompanyAddress());
+        }
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyWebsite())) {
+            company.setCompanyWebsite(dto.getCompanyWebsite());
+        }
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyLogo())) {
+            company.setCompanyLogo(dto.getCompanyLogo());
+        }
+
+        if (ObjectUtils.isEmpty(dto.getCompanyContactPersonName())) {
+            throw new InvalidException(messageSource.getMessage("error.company.personname-empty", null, locale));
+        }
+
+        company.setCompanyContactPersonName(dto.getCompanyContactPersonName());
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyContactPersonTitle())) {
+            company.setCompanyContactPersonTitle(dto.getCompanyContactPersonTitle());
+        }
+
+        if (ObjectUtils.isEmpty(dto.getCompanyContactPersonEmail())) {
+            company.setCompanyContactPersonEmail(dto.getEmail());
+        } else {
+            company.setCompanyContactPersonEmail(dto.getCompanyContactPersonEmail());
+        }
+
+        if (!ObjectUtils.isEmpty(dto.getCompanyContactPersonPhoneNumber())) {
+            company.setCompanyContactPersonPhoneNumber(dto.getCompanyContactPersonPhoneNumber());
+        }
 
         companyRepo.save(company);
         return company;

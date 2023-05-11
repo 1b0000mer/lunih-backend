@@ -1,5 +1,6 @@
 package com.gsquad.lunih.controllers;
 
+import com.gsquad.lunih.dtos.accountDTO.CompanyAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
 import com.gsquad.lunih.entities.Account;
@@ -56,6 +57,12 @@ public class AccountController {
     @PostMapping("/university")
     public ResponseEntity<Account> createNewUniversity(@Valid @RequestBody UniversityAccountDTO dto) {
         return new ResponseEntity<>(service.createNewUniversity(dto), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Create new University Account")
+    @PostMapping("/company")
+    public ResponseEntity<Account> createNewCompany(@Valid @RequestBody CompanyAccountDTO dto) {
+        return new ResponseEntity<>(service.createNewCompany(dto), HttpStatus.OK);
     }
 
 }
