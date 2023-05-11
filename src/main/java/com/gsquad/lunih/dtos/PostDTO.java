@@ -1,10 +1,8 @@
 package com.gsquad.lunih.dtos;
 
-import com.gsquad.lunih.entities.Account;
 import com.gsquad.lunih.entities.Deliverable;
 import com.gsquad.lunih.entities.Student;
-import com.gsquad.lunih.entities.categories.PostType;
-import com.gsquad.lunih.entities.categories.Spectrum;
+import com.gsquad.lunih.entities.categories.Industry;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,27 +18,32 @@ import java.util.List;
 @Setter
 public class PostDTO {
 
-    private List<String> studentList = new ArrayList<>();
-
     private int postType;
 
-    private String title;
+    private String titleEn;
 
-    private String description;
+    private String titleLv;
 
-    private List<Spectrum> spectrumList = new ArrayList<>();
+    private String descriptionEn;
 
-    private  Date startDate;
+    private String descriptionLv;
+
+    private List<Integer> industryList = new ArrayList<>();
+
+    private Date startDate;
 
     private Date endDate;
 
+    @ApiModelProperty(value = "number of slot are allowed. Job/Internship -> slot | Thesis/Research 1 -> individual, >= 2 -> team")
     private int numSlot;
 
-    private List<Student> queueList = new ArrayList<>();
+    private List<String> studentList = new ArrayList<>();
 
-    private Student leader;
+    private List<String> queueList = new ArrayList<>();
 
-    private List<Deliverable> deliverables = new ArrayList<>();
+    @ApiModelProperty(value = "studentID")
+    private String leader;
 
-    private Account author;
+    private List<Integer> deliverables = new ArrayList<>();
+
 }

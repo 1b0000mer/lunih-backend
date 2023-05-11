@@ -2,12 +2,12 @@ package com.gsquad.lunih.services.program;
 
 import com.gsquad.lunih.dtos.categories.ProgramDTO;
 import com.gsquad.lunih.entities.categories.Program;
-import com.gsquad.lunih.entities.categories.Spectrum;
+import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.categories.ProgramRepo;
 import com.gsquad.lunih.services.faculty.FacultyService;
-import com.gsquad.lunih.services.spectrum.SpectrumService;
+import com.gsquad.lunih.services.industry.IndustryService;
 import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -25,18 +25,15 @@ import java.util.Locale;
 public class ProgramServiceImpl implements ProgramService {
 
     private final ProgramRepo programRepo;
-
     private final MessageSource messageSource;
     private final FacultyService facultyService;
-    private final SpectrumService spectrumService;
+    private final IndustryService industryService;
 
-
-
-    public ProgramServiceImpl(ProgramRepo programRepo, MessageSource messageSource, FacultyService facultyService, SpectrumService spectrumService) {
+    public ProgramServiceImpl(ProgramRepo programRepo, MessageSource messageSource, FacultyService facultyService, IndustryService industryService) {
         this.programRepo = programRepo;
         this.messageSource = messageSource;
         this.facultyService = facultyService;
-        this.spectrumService = spectrumService;
+        this.industryService = industryService;
     }
 
     @Override
@@ -65,27 +62,30 @@ public class ProgramServiceImpl implements ProgramService {
         Locale locale = LocaleContextHolder.getLocale();
 
         // TODO: validate input before handle
-        if (ObjectUtils.isEmpty(dto.getName())) {
-            throw new InvalidException(messageSource.getMessage("error.program.name-empty", null, locale));
+        if (ObjectUtils.isEmpty(dto.getNameEn())) {
+            throw new InvalidException(messageSource.getMessage("error.program.nameEn-empty", null, locale));
+        }
+        if (ObjectUtils.isEmpty(dto.getNameLv())) {
+            throw new InvalidException(messageSource.getMessage("error.program.nameLv-empty", null, locale));
         }
         if (ObjectUtils.isEmpty(dto.getStudyLevel())) {
-            throw new InvalidException(messageSource.getMessage("error.program.studylevel-emptyempty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.program.studylevel-empty", null, locale));
         }
         if (ObjectUtils.isEmpty(dto.getFacultyID())) {
-            throw new InvalidException(messageSource.getMessage("error.program.faculty-emptyempty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.program.faculty-empty", null, locale));
         }
 
 
         // TODO: handle logic
         Program program = new Program();
-        program.setName(dto.getName());
+        program.setNameEn(dto.getNameEn());
+        program.setNameLv(dto.getNameLv());
         program.setStudyLevel(dto.getStudyLevel());
         program.setFaculty(facultyService.get(dto.getFacultyID()));
-        List<Spectrum> spectrumList = new ArrayList<>();
-        dto.getSpectrumList().forEach(spectrumID -> spectrumList.add(
-                spectrumService.get(spectrumID)
-        ));
-        program.setSpectrumList(spectrumList);
+
+        List<Industry> industryList = new ArrayList<>();
+        dto.getSpectrumList().forEach(spectrumID -> industryList.add(industryService.get(spectrumID)));
+        program.setIndustryList(industryList);
         program.setStatus(true);
 
         programRepo.save(program);
@@ -100,25 +100,27 @@ public class ProgramServiceImpl implements ProgramService {
         Program program = get(id);
 
         // TODO: validate input before handle
-        if (ObjectUtils.isEmpty(dto.getName())) {
-            throw new InvalidException(messageSource.getMessage("error.program.name-empty", null, locale));
+        if (ObjectUtils.isEmpty(dto.getNameEn())) {
+            throw new InvalidException(messageSource.getMessage("error.program.nameEn-empty", null, locale));
+        }
+        if (ObjectUtils.isEmpty(dto.getNameLv())) {
+            throw new InvalidException(messageSource.getMessage("error.program.nameLv-empty", null, locale));
         }
         if (ObjectUtils.isEmpty(dto.getStudyLevel())) {
-            throw new InvalidException(messageSource.getMessage("error.program.studylevel-emptyempty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.program.studylevel-empty", null, locale));
         }
         if (ObjectUtils.isEmpty(dto.getFacultyID())) {
-            throw new InvalidException(messageSource.getMessage("error.program.faculty-emptyempty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.program.faculty-empty", null, locale));
         }
 
         // TODO: handle logic
-        program.setName(dto.getName());
+        program.setNameEn(dto.getNameEn());
+        program.setNameLv(dto.getNameLv());
         program.setStudyLevel(dto.getStudyLevel());
         program.setFaculty(facultyService.get(dto.getFacultyID()));
-        List<Spectrum> spectrumList = new ArrayList<>();
-        dto.getSpectrumList().forEach(spectrumID -> spectrumList.add(
-                spectrumService.get(spectrumID)
-        ));
-        program.setSpectrumList(spectrumList);
+        List<Industry> industryList = new ArrayList<>();
+        dto.getSpectrumList().forEach(spectrumID -> industryList.add(industryService.get(spectrumID)));
+        program.setIndustryList(industryList);
 
         programRepo.save(program);
         return program;

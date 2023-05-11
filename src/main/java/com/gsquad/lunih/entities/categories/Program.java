@@ -21,8 +21,13 @@ public class Program {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 80)
-    private String name;
+    @ApiModelProperty(name = "name of Program in English")
+    @Column(nullable = false)
+    private String nameEn;
+
+    @ApiModelProperty(name = "name of Program in Latvian")
+    @Column(nullable = false)
+    private String nameLv;
 
     @ApiModelProperty(name = "get from EnumStudyLevel")
     private String studyLevel;
@@ -32,7 +37,7 @@ public class Program {
 
     @OneToMany
     @ApiModelProperty(name = "field of the program?")
-    private List<Spectrum> spectrumList = new ArrayList<>();
+    private List<Industry> industryList = new ArrayList<>();
 
     private Boolean status = true;
 }

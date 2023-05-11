@@ -8,10 +8,12 @@ import java.util.List;
 @Getter
 @Setter
 public class ProgramDTO {
-    private String name;
+    private String nameEn;
+
+    private String nameLv;
 
     private String studyLevel;
     private int facultyID;
-    private List<Integer>spectrumList= new ArrayList<>();
+    private List<Integer> spectrumList = new ArrayList<>();
 
 }

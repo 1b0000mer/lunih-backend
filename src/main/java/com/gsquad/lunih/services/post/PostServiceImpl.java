@@ -10,8 +10,7 @@ import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.PostRepo;
 import com.gsquad.lunih.services.spectrum.SpectrumService;
 import com.gsquad.lunih.services.student.StudentService;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -39,8 +38,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Page<Post> listAllPaging(String search, int page, int size, String sort, String column) {
+        return null;
+    }
+
+    @Override
     public List<Post> listAll() {
-        return postRepo.findAll();
+        return null;
     }
 
     @Override

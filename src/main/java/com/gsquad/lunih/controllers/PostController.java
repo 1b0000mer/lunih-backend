@@ -22,27 +22,18 @@ public class PostController {
         this.service = service;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Post>> listAll() {
-        return new ResponseEntity<>(service.listAll(), HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Post> getById(@PathVariable int id) {
-        try {
-            Post post = service.get(id);
-            return new ResponseEntity<>(post, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<Post> create(@Valid @RequestBody PostDTO dto) {
-        try {
-            return new ResponseEntity<>(service.create(dto), HttpStatus.OK);
-        } catch (ValidationException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @GetMapping
+//    public ResponseEntity<List<Post>> listAll() {
+//        return null;
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Post> getById(@PathVariable int id) {
+//        return null;
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity<Post> create(@Valid @RequestBody PostDTO dto) {
+//        return null;
+//    }
 }

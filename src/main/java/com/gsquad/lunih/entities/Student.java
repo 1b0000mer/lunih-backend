@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Student {
 
     @Id
@@ -31,10 +33,10 @@ public class Student {
     )
     private Account account;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String surName;
 
     private Date birthDay;
@@ -42,13 +44,11 @@ public class Student {
     @ApiModelProperty(value = "female : 1, male: 0")
     private Boolean gender;
 
-    @Column(length = 18)
     private String phoneNumber;
 
     @ApiModelProperty(value = "approved by admin/university?")
     private Boolean approved = null;
 
-    @Column(length = 100)
     @JsonIgnore
     private String reason;
 

@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,14 +20,20 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Deliverable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 80)
-    private String name;
+    @ApiModelProperty(name = "name of Deliverable in English")
+    @Column(nullable = false)
+    private String nameEn;
+
+    @ApiModelProperty(name = "name of Deliverable in Latvian")
+    @Column(nullable = false)
+    private String nameLv;
 
     @ApiModelProperty(value = "Id file")
     private String fileAttachment;

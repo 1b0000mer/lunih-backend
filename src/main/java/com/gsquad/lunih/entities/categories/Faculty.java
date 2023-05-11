@@ -20,11 +20,11 @@ public class Faculty {
     private int id;
 
     @ApiModelProperty(name = "name of Faculty in English")
-    @Column(nullable = false, length = 80)
+    @Column(nullable = false)
     private String nameEn;
 
     @ApiModelProperty(name = "name of Faculty in Latvian")
-    @Column(nullable = false, length = 80)
+    @Column(nullable = false)
     private String nameLv;
 
     @ApiModelProperty(name = "soft delete")

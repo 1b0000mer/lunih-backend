@@ -1,5 +1,6 @@
 package com.gsquad.lunih.entities.categories;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,14 +13,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Spectrum {
+public class Industry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 80)
-    private String name;
+    @ApiModelProperty(name = "name of Industry in English")
+    @Column(nullable = false)
+    private String nameEn;
+
+    @ApiModelProperty(name = "name of Industry in Latvian")
+    @Column(nullable = false)
+    private String nameLv;
 
     private Boolean status = true;
 }
