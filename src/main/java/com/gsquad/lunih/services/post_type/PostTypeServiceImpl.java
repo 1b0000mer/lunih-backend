@@ -76,6 +76,8 @@ public class PostTypeServiceImpl implements PostTypeService {
         //get locale code (en, lv)
         Locale locale = LocaleContextHolder.getLocale();
 
+        PostType postType = get(id);
+
         // TODO: validate input before handle
         if (ObjectUtils.isEmpty(dto.getNameEn())) {
             throw new InvalidException(messageSource.getMessage("error.postType.nameEn-empty", null, locale));
@@ -86,7 +88,6 @@ public class PostTypeServiceImpl implements PostTypeService {
         }
 
         // TODO: handle logic
-        PostType postType = get(id);
         postType.setNameEn(dto.getNameEn());
         postType.setNameLv(dto.getNameLv());
 

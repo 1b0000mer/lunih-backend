@@ -2,10 +2,13 @@ package com.gsquad.lunih.services.post;
 
 import com.gsquad.lunih.dtos.PostDTO;
 import com.gsquad.lunih.entities.Post;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface PostService {
+
+    Page<Post> listAllPaging(String search, int page, int size, String sort, String column);
 
     List<Post> listAll();
 
