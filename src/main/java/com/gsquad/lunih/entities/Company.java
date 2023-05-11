@@ -1,6 +1,7 @@
 package com.gsquad.lunih.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,4 +41,11 @@ public class Company {
     @JsonIgnore
     @CreatedBy
     private String createdBy;
+
+    @ApiModelProperty(value = "approved by admin/university?")
+    private Boolean approved = null;
+
+    @Column(length = 100)
+    @JsonIgnore
+    private String reason;
 }
