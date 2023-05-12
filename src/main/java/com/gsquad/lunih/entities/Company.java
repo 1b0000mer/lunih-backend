@@ -61,11 +61,13 @@ public class Company {
     @Column(nullable = false)
     private String companyContactPersonName;
 
-    @ApiModelProperty(value = "position")
+    @ApiModelProperty(value = "mr/mrs/ms...")
     private String companyContactPersonTitle;
 
     @ApiModelProperty(value = "leave empty if same as registered email")
     private String companyContactPersonEmail;
+
+    private String companyContactPersonDepartment;
 
     private String companyContactPersonPhoneNumber;
 

@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -62,6 +64,7 @@ public class AccountController {
     }
 
     @ApiOperation(value = "Create new Admin Account")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin")
     public ResponseEntity<Account> createNewAdmin(@Valid @RequestBody AdminAccountDTO dto) {
         return new ResponseEntity<>(service.createNewAdmin(dto), HttpStatus.OK);
@@ -69,7 +72,7 @@ public class AccountController {
 
     @ApiOperation(value = "Change password Account")
     @PutMapping("/change-password/{id}")
-    public ResponseEntity<Account> createNewAdmin(@PathVariable int id, @Valid @RequestBody ChangePasswordDTO dto) {
+    public ResponseEntity<Account> changePassword(@PathVariable int id, @Valid @RequestBody ChangePasswordDTO dto) {
         return new ResponseEntity<>(service.changePassword(id, dto), HttpStatus.OK);
     }
 

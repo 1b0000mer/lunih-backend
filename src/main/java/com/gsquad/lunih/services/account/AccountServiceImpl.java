@@ -107,6 +107,7 @@ public class AccountServiceImpl implements AccountService {
         Student student = new Student();
         student.setStudentID(dto.getStudentID());
         student.setAccount(acc);
+        student.setProgram(programService.get(dto.getProgram()));
         student.setFirstName(dto.getFirstName());
         student.setSurName(dto.getSurName());
 
