@@ -8,10 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface PostRepo extends JpaRepository <Post, Integer> {
 
-//    @Query(
-//            value = "",
-//            countQuery = "",
-//            nativeQuery = true
-//    )
-//    Page<Post> getAllPostPaging(String search, Pageable pageable);
+    @Query(
+            value = "SELECT * FROM Post p " +
+                    "WHERE p.status=true AND (p.titleEn like %?1% OR p.titleLv like %?1%)",
+            countQuery = "SELECT count(*) FROM Post",
+            nativeQuery = true
+    )
+    Page<Post> getAllPostPaging(String search, Pageable pageable);
 }

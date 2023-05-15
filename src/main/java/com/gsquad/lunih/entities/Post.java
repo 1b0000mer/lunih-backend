@@ -46,7 +46,7 @@ public class Post {
     @Column(nullable = false, length = 500)
     private String descriptionLv;
 
-    @OneToMany
+    @ManyToMany
     private List<Industry> industryList = new ArrayList<>();
 
     @Column(nullable = false)
@@ -59,16 +59,16 @@ public class Post {
     @ApiModelProperty(value = "number of slot are allowed. Job/Internship -> slot | Thesis/Research 1 -> individual, >= 2 -> team")
     private int numSlot;
 
-    @OneToMany
+    @ManyToMany
     private List<Student> studentList = new ArrayList<>();
 
-    @OneToMany
+    @ManyToMany
     private List<Student> queueList = new ArrayList<>();
 
     @OneToOne
     private Student leader;
 
-    @OneToMany
+    @ManyToMany
     private List<Deliverable> deliverables = new ArrayList<>();
 
     @OneToOne

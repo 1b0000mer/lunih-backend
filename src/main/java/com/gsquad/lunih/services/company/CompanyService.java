@@ -19,8 +19,7 @@ public interface CompanyService {
 
     Company update(int companyID, CompanyAccountDTO dto);
 
-    Company approveCompany(int companyID, ApproveCompanyDTO approveCompanyDTO);
-
+//    Company approveCompany(int companyID, ApproveCompanyDTO approveCompanyDTO);
 
     Company delete(int companyID);
 }

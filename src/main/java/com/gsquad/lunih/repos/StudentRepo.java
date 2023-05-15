@@ -19,4 +19,6 @@ public interface StudentRepo extends JpaRepository<Student, String> {
     Page<Student> getAllStudentPaging(String search, Pageable pageable);
 
     Optional<Student> findByAccount_Id(int id);
+
+    Optional<Student> findByAccount_Email(String email);
 }

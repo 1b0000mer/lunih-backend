@@ -20,4 +20,5 @@ public interface CompanyRepo extends JpaRepository<Company, Integer> {
     )
     Page<Company> getAllCompanyPaging(String search, Pageable pageable);
 
+    Optional<Company> findByAccount_Email(String email);
 }

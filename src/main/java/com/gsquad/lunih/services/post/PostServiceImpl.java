@@ -7,17 +7,21 @@ import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.PostRepo;
+import com.gsquad.lunih.services.account.AccountService;
 import com.gsquad.lunih.services.industry.IndustryService;
 import com.gsquad.lunih.services.post_type.PostTypeService;
 import com.gsquad.lunih.services.student.StudentService;
+import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,36 +30,37 @@ import java.util.Locale;
 public class PostServiceImpl implements PostService {
 
     private final PostRepo postRepo;
-
     private final StudentService studentService;
-
     private final MessageSource messageSource;
     private final IndustryService industryService;
-
     private final PostTypeService postTypeService;
+    private final AccountService accountService;
 
-    public PostServiceImpl(PostRepo postRepo, StudentService studentService, MessageSource messageSource, IndustryService industryService, PostTypeService postTypeService) {
+    public PostServiceImpl(PostRepo postRepo, StudentService studentService, MessageSource messageSource, IndustryService industryService, PostTypeService postTypeService, AccountService accountService) {
         this.postRepo = postRepo;
         this.studentService = studentService;
         this.messageSource = messageSource;
         this.industryService = industryService;
         this.postTypeService = postTypeService;
+        this.accountService = accountService;
     }
 
     @Override
     public Page<Post> listAllPaging(String search, int page, int size, String sort, String column) {
-        return null;
+        Pageable pageable = PageUtils.createPageable(page, size, sort, column);
+
+        return postRepo.getAllPostPaging(search, pageable);
     }
 
     @Override
     public List<Post> listAll() {
-        return null;
+        return postRepo.findAll();
     }
 
     @Override
     public Post get(int id) {
         Locale locale = LocaleContextHolder.getLocale();
-         return postRepo.findById(id).orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.post.id-notfound", null , locale),id)));
+        return postRepo.findById(id).orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.post.id-notfound", null, locale), id)));
 
     }
 
@@ -75,6 +80,18 @@ public class PostServiceImpl implements PostService {
         if (ObjectUtils.isEmpty(dto.getDescriptionLv())) {
             throw new InvalidException(messageSource.getMessage("error.post.descriptionLv-empty", null, locale));
         }
+        if (ObjectUtils.isEmpty(dto.getStartDate())) {
+            throw new InvalidException(messageSource.getMessage("error.post.startdate-empty", null, locale));
+        }
+        if (ObjectUtils.isEmpty(dto.getEndDate())) {
+            throw new InvalidException(messageSource.getMessage("error.post.enddate-empty", null, locale));
+        }
+        if (checkTime(dto.getStartDate(), dto.getEndDate())) {
+            throw new InvalidException(messageSource.getMessage("error.post.time-invalid", null, locale));
+        }
+        if (dto.getNumSlot() <= 0) {
+            throw new InvalidException(messageSource.getMessage("error.post.slot-invalid", null, locale));
+        }
 
         Post post = new Post();
 
@@ -86,8 +103,9 @@ public class PostServiceImpl implements PostService {
         post.setStartDate(dto.getStartDate());
         post.setEndDate(dto.getEndDate());
         post.setNumSlot(dto.getNumSlot());
-
-
+        if (dto.getAuthor() != -1) {
+            post.setAuthor(accountService.get(dto.getAuthor()));
+        }
 
         List<Industry> industryList = new ArrayList<>();
         dto.getIndustryList().forEach(industryID -> industryList.add(industryService.get(industryID)));
@@ -101,11 +119,12 @@ public class PostServiceImpl implements PostService {
         dto.getQueueList().forEach(studentID -> queueList.add(studentService.get(String.valueOf(studentID))));
         post.setQueueList(queueList);
 
+        // TODO: missing deliverable Service
         /*List<Deliverable> deliverables = new ArrayList<>();
-        dto.getDeliverables().forEach(deliveabreID -> deliverables.add(deliveabreService.get(deliveabreID.getId())));
+        dto.getDeliverables().forEach(deliverableID -> deliverables.add(deliverableService.get(deliverableID.getId())));
         post.setDeliverables(deliverables);*/
 
-        // TODO:
+        // TODO: status of the post, true for now
         post.setStatus(true);
 
         postRepo.save(post);
@@ -130,6 +149,18 @@ public class PostServiceImpl implements PostService {
         if (ObjectUtils.isEmpty(dto.getDescriptionLv())) {
             throw new InvalidException(messageSource.getMessage("error.post.descriptionLv-empty", null, locale));
         }
+        if (ObjectUtils.isEmpty(dto.getStartDate())) {
+            throw new InvalidException(messageSource.getMessage("error.post.startdate-empty", null, locale));
+        }
+        if (ObjectUtils.isEmpty(dto.getEndDate())) {
+            throw new InvalidException(messageSource.getMessage("error.post.enddate-empty", null, locale));
+        }
+        if (checkTime(dto.getStartDate(), dto.getEndDate())) {
+            throw new InvalidException(messageSource.getMessage("error.post.time-invalid", null, locale));
+        }
+        if (dto.getNumSlot() <= 0) {
+            throw new InvalidException(messageSource.getMessage("error.post.slot-invalid", null, locale));
+        }
 
         post.setTitleEn(dto.getTitleEn());
         post.setTitleLv(dto.getTitleLv());
@@ -139,6 +170,9 @@ public class PostServiceImpl implements PostService {
         post.setStartDate(dto.getStartDate());
         post.setEndDate(dto.getEndDate());
         post.setNumSlot(dto.getNumSlot());
+        if (dto.getAuthor() != -1) {
+            post.setAuthor(accountService.get(dto.getAuthor()));
+        }
 
         List<Industry> industryList = new ArrayList<>();
         dto.getIndustryList().forEach(industryID -> industryList.add(industryService.get(industryID)));
@@ -152,13 +186,13 @@ public class PostServiceImpl implements PostService {
         dto.getQueueList().forEach(studentID -> queueList.add(studentService.get(String.valueOf(studentID))));
         post.setQueueList(queueList);
 
+        // TODO: missing deliverable Service
         /*List<Deliverable> deliverables = new ArrayList<>();
-        dto.getDeliverables().forEach(deliveabreID -> deliverables.add(deliveabreService.get(deliveabreID.getId())));
+        dto.getDeliverables().forEach(deliverableID -> deliverables.add(deliverableService.get(deliverableID.getId())));
         post.setDeliverables(deliverables);*/
 
         postRepo.save(post);
         return post;
-
     }
 
     @Override
@@ -177,4 +211,9 @@ public class PostServiceImpl implements PostService {
         postRepo.delete(post);
         return post;
     }
+
+    private boolean checkTime(Date fromDate, Date toDate) {
+        return fromDate.after(toDate);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.gsquad.lunih.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gsquad.lunih.entities.categories.Program;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,6 +49,9 @@ public class Student {
 
     @ApiModelProperty(value = "approved by admin/university?")
     private Boolean approved = null;
+
+    @OneToOne
+    private Program program;
 
     @JsonIgnore
     private String reason;

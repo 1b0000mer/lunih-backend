@@ -20,4 +20,6 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
     Page<Account> getAllAccountPaging(String search, Pageable pageable);
 
     Optional<Account> findByEmail(String email);
+
+    Boolean existsByEmail(String email);
 }

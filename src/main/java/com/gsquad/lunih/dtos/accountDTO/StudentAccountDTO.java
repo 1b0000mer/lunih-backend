@@ -18,6 +18,8 @@ public class StudentAccountDTO {
     private String firstName;
 
     private String surName;
+
+    private int program = -1;
     
     private Date birthDay;
 

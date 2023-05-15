@@ -61,11 +61,13 @@ public class Company {
     @Column(nullable = false)
     private String companyContactPersonName;
 
-    @ApiModelProperty(value = "position")
+    @ApiModelProperty(value = "mr/mrs/ms...")
     private String companyContactPersonTitle;
 
     @ApiModelProperty(value = "leave empty if same as registered email")
     private String companyContactPersonEmail;
+
+    private String companyContactPersonDepartment;
 
     private String companyContactPersonPhoneNumber;
 
@@ -77,10 +79,4 @@ public class Company {
     @CreatedBy
     private String createdBy;
 
-    @ApiModelProperty(value = "approved by admin/university?")
-    private Boolean approved = null;
-
-    @Column(length = 100)
-    @JsonIgnore
-    private String reason;
 }

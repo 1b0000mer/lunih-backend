@@ -32,9 +32,12 @@ public class CompanyAccountDTO {
     @ApiModelProperty(value = "id image file")
     private String companyLogo;
 
+    @ApiModelProperty(value = "mr/mrs/ms...")
+    private String companyContactPersonTitle;
+
     private String companyContactPersonName;
 
-    private String companyContactPersonTitle;
+    private String companyContactPersonDepartment;
 
     @ApiModelProperty(value = "leave empty if same as registered email")
     private String companyContactPersonEmail;

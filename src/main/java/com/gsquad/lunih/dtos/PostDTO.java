@@ -44,6 +44,8 @@ public class PostDTO {
     @ApiModelProperty(value = "studentID")
     private String leader;
 
+    private int author = -1;
+
     private List<Integer> deliverables = new ArrayList<>();
 
 }
