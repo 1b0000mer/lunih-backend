@@ -27,7 +27,6 @@ import java.util.Locale;
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepo companyRepo;
-
     private final IndustryService industryService;
     private final MessageSource messageSource;
 
@@ -58,7 +57,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company getCurrent(Principal principal) {
-        return null;
+        Locale locale = LocaleContextHolder.getLocale();
+        return companyRepo.findByAccount_Email(principal.getName())
+                .orElseThrow(() -> new NotFoundException(String.format("error.company")));
     }
 
     @Override
@@ -67,76 +68,55 @@ public class CompanyServiceImpl implements CompanyService {
 
         Company company = get(companyID);
 
+        if (ObjectUtils.isEmpty(dto.getCompanyName())) {
+            throw new InvalidException(messageSource.getMessage("error.company.name-empty", null, locale));
+        }
+
         company.setCompanyName(dto.getCompanyName());
-
-        if (!ObjectUtils.isEmpty(dto.getCompanyDescription())) {
-            company.setCompanyDescription(dto.getCompanyDescription());
-        }
-
-        if (!ObjectUtils.isEmpty(dto.getCompanyType())) {
-            company.setCompanyType(dto.getCompanyType());
-        }
+        company.setCompanyDescription(dto.getCompanyDescription());
+        company.setCompanyType(dto.getCompanyType());
 
         List<Industry> industryList = new ArrayList<>();
         dto.getIndustryList().forEach(industryID -> industryList.add(industryService.get(industryID)));
         company.setIndustryList(industryList);
 
-        if (!ObjectUtils.isEmpty(dto.getCompanyAddress())) {
-            company.setCompanyAddress(dto.getCompanyAddress());
-        }
-
-        if (!ObjectUtils.isEmpty(dto.getCompanyWebsite())) {
-            company.setCompanyWebsite(dto.getCompanyWebsite());
-        }
-
-        if (!ObjectUtils.isEmpty(dto.getCompanyLogo())) {
-            company.setCompanyLogo(dto.getCompanyLogo());
-        }
+        company.setCompanyAddress(dto.getCompanyAddress());
+        company.setCompanyWebsite(dto.getCompanyWebsite());
+        company.setCompanyLogo(dto.getCompanyLogo());
 
         if (ObjectUtils.isEmpty(dto.getCompanyContactPersonName())) {
             throw new InvalidException(messageSource.getMessage("error.company.personname-empty", null, locale));
         }
 
         company.setCompanyContactPersonName(dto.getCompanyContactPersonName());
-
-        if (!ObjectUtils.isEmpty(dto.getCompanyContactPersonTitle())) {
-            company.setCompanyContactPersonTitle(dto.getCompanyContactPersonTitle());
-        }
-
-        if (ObjectUtils.isEmpty(dto.getCompanyContactPersonEmail())) {
-            company.setCompanyContactPersonEmail(dto.getEmail());
-        } else {
-            company.setCompanyContactPersonEmail(dto.getCompanyContactPersonEmail());
-        }
-
-        if (!ObjectUtils.isEmpty(dto.getCompanyContactPersonPhoneNumber())) {
-            company.setCompanyContactPersonPhoneNumber(dto.getCompanyContactPersonPhoneNumber());
-        }
+        company.setCompanyContactPersonTitle(dto.getCompanyContactPersonTitle());
+        company.setCompanyContactPersonEmail(dto.getCompanyContactPersonEmail());
+        company.setCompanyContactPersonPhoneNumber(dto.getCompanyContactPersonPhoneNumber());
 
         companyRepo.save(company);
         return company;
     }
 
- @Override
-    public Company approveCompany(int companyID, ApproveCompanyDTO approveCompanyDTO) {
-        Locale locale = LocaleContextHolder.getLocale();
-
-        Company company = get(companyID);
-
-
-     company.setApproved(approveCompanyDTO.getIsApproved());
-        if (!approveCompanyDTO.getIsApproved()) {
-
-            if (ObjectUtils.isEmpty(approveCompanyDTO.getReason())) {
-                throw new InvalidException(messageSource.getMessage("error.approve.reason-empty", null, locale));
-            }
-            company.setReason(approveCompanyDTO.getReason());
-            // TODO: send mail
-        }
-
-        companyRepo.save(company);
-        return company;
-    }
+//    @Override
+//    public Company approveCompany(int companyID, ApproveCompanyDTO approveCompanyDTO) {
+//        Locale locale = LocaleContextHolder.getLocale();
+//
+//        Company company = get(companyID);
+//
+//
+//        company.setApproved(approveCompanyDTO.getIsApproved());
+//        if (!approveCompanyDTO.getIsApproved()) {
+//
+//            if (ObjectUtils.isEmpty(approveCompanyDTO.getReason())) {
+//                throw new InvalidException(messageSource.getMessage("error.approve.reason-empty", null, locale));
+//            }
+//            company.setReason(approveCompanyDTO.getReason());
+//            // TODO: send mail
+//        }
+//
+//        companyRepo.save(company);
+//        return company;
+//    }
 
     @Override
     public Company delete(int companyID) {

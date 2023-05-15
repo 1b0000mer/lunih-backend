@@ -2,17 +2,22 @@ package com.gsquad.lunih.services.university;
 
 import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
 import com.gsquad.lunih.entities.University;
+import com.gsquad.lunih.entities.categories.Program;
+import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.UniversityRepo;
+import com.gsquad.lunih.services.program.ProgramService;
 import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,11 +26,12 @@ import java.util.Locale;
 public class UniversityServiceImpl implements UniversityService {
 
     private final UniversityRepo universityRepo;
-
+    private final ProgramService programService;
     private final MessageSource messageSource;
 
-    public UniversityServiceImpl(UniversityRepo universityRepo, MessageSource messageSource) {
+    public UniversityServiceImpl(UniversityRepo universityRepo, ProgramService programService, MessageSource messageSource) {
         this.universityRepo = universityRepo;
+        this.programService = programService;
         this.messageSource = messageSource;
     }
 
@@ -50,7 +56,10 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public University getCurrent(Principal principal) {
-        return null;
+        Locale locale = LocaleContextHolder.getLocale();
+
+        return universityRepo.findByAccount_Email(principal.getName())
+                .orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.university.email-notfound", null, locale), principal.getName())));
     }
 
     @Override
@@ -59,20 +68,16 @@ public class UniversityServiceImpl implements UniversityService {
 
         University university = get(id);
 
-//        if (ObjectUtils.isEmpty(dto.getName())) {
-//            throw new InvalidException(messageSource.getMessage("error.university.name-empty", null, locale));
-//        }
-//
-//        if (ObjectUtils.isEmpty(dto.getAddress())) {
-//            throw new InvalidException(messageSource.getMessage("error.university.address-empty", null, locale));
-//        }
-//
-//        if (ObjectUtils.isEmpty(dto.getPhoneNumber())) {
-//            throw new InvalidException(messageSource.getMessage("error.university.phoneNumber-empty", null, locale));
-//        }
+        if (ObjectUtils.isEmpty(dto.getName())) {
+            throw new InvalidException(messageSource.getMessage("error.university.name-empty", null, locale));
+        }
+        university.setName(dto.getName());
+
+        List<Program> programList = new ArrayList<>();
+        dto.getProgramList().forEach(programID -> programList.add(programService.get(programID)));
+        university.setProgramList(programList);
 
         //nullable
-        university.setName(dto.getName());
         university.setAddress(dto.getAddress());
         university.setPhoneNumber(dto.getPhoneNumber());
 

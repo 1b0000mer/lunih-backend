@@ -6,6 +6,7 @@ import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.StudentRepo;
+import com.gsquad.lunih.services.program.ProgramService;
 import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -24,10 +25,13 @@ import java.util.Locale;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepo studentRepo;
+
+    private final ProgramService programService;
     private final MessageSource messageSource;
 
-    public StudentServiceImpl(StudentRepo studentRepo, MessageSource messageSource) {
+    public StudentServiceImpl(StudentRepo studentRepo, ProgramService programService, MessageSource messageSource) {
         this.studentRepo = studentRepo;
+        this.programService = programService;
         this.messageSource = messageSource;
     }
 
@@ -52,7 +56,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getCurrent(Principal principal) {
-        return null;
+        Locale locale = LocaleContextHolder.getLocale();
+        return studentRepo.findByAccount_Email(principal.getName())
+                .orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.student.email-notfound", null, locale), principal.getName())));
     }
 
     @Override
@@ -82,17 +88,13 @@ public class StudentServiceImpl implements StudentService {
         student.setFirstName(dto.getFirstName());
         student.setSurName(dto.getSurName());
 
-        if (!ObjectUtils.isEmpty(dto.getBirthDay())) {
-            student.setBirthDay(dto.getBirthDay());
+        if (dto.getProgram() != -1) {
+            student.setProgram(programService.get(dto.getProgram()));
         }
 
-        if (!ObjectUtils.isEmpty(dto.getGender())) {
-            student.setGender(dto.getGender());
-        }
-
-        if (!ObjectUtils.isEmpty(dto.getPhoneNumber())) {
-            student.setPhoneNumber(dto.getPhoneNumber());
-        }
+        student.setBirthDay(dto.getBirthDay());
+        student.setGender(dto.getGender());
+        student.setPhoneNumber(dto.getPhoneNumber());
 
 //        //if change email
 //        if (!dto.getEmail().equals(student.getAccount().getEmail())) {

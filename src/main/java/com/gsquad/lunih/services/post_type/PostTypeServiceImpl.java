@@ -5,8 +5,11 @@ import com.gsquad.lunih.entities.categories.PostType;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.categories.PostTypeRepo;
+import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -27,12 +30,12 @@ public class PostTypeServiceImpl implements PostTypeService {
         this.messageSource = messageSource;
     }
 
-    /*@Override
+    @Override
     public Page<PostType> listAllPaging(String search, int page, int size, String sort, String column) {
         Pageable pageable = PageUtils.createPageable(page, size, sort, column);
 
-       return postTypeRepo.getAllPostTypePaging(search, pageable);
-    }*/
+        return postTypeRepo.getAllPostTypePaging(search, pageable);
+    }
 
     @Override
     public List<PostType> listAll() {
@@ -44,7 +47,7 @@ public class PostTypeServiceImpl implements PostTypeService {
         //get locale code (en, lv)
         Locale locale = LocaleContextHolder.getLocale();
 
-        return postTypeRepo.findById(id).orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.postType.ID-notfound", null , locale),id)));
+        return postTypeRepo.findById(id).orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.postType.ID-notfound", null, locale), id)));
     }
 
     @Override
@@ -98,7 +101,7 @@ public class PostTypeServiceImpl implements PostTypeService {
 
     @Override
     public PostType changeStatus(int id) {
-       PostType postType = get(id);
+        PostType postType = get(id);
 
         postType.setStatus(!postType.getStatus());
 

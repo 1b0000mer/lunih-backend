@@ -1,5 +1,6 @@
 package com.gsquad.lunih;
 
+import com.gsquad.lunih.dtos.PostDTO;
 import com.gsquad.lunih.dtos.accountDTO.AdminAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.CompanyAccountDTO;
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
@@ -9,10 +10,8 @@ import com.gsquad.lunih.dtos.categories.IndustryDTO;
 import com.gsquad.lunih.dtos.categories.PostTypeDTO;
 import com.gsquad.lunih.dtos.categories.ProgramDTO;
 import com.gsquad.lunih.dtos.student.ApproveStudentDTO;
-import com.gsquad.lunih.repos.AccountRepo;
-import com.gsquad.lunih.repos.CompanyRepo;
-import com.gsquad.lunih.repos.StudentRepo;
-import com.gsquad.lunih.repos.UniversityRepo;
+import com.gsquad.lunih.entities.Post;
+import com.gsquad.lunih.repos.*;
 import com.gsquad.lunih.repos.categories.FacultyRepo;
 import com.gsquad.lunih.repos.categories.IndustryRepo;
 import com.gsquad.lunih.repos.categories.PostTypeRepo;
@@ -21,6 +20,7 @@ import com.gsquad.lunih.services.account.AccountService;
 import com.gsquad.lunih.services.company.CompanyService;
 import com.gsquad.lunih.services.faculty.FacultyService;
 import com.gsquad.lunih.services.industry.IndustryService;
+import com.gsquad.lunih.services.post.PostService;
 import com.gsquad.lunih.services.post_type.PostTypeService;
 import com.gsquad.lunih.services.program.ProgramService;
 import com.gsquad.lunih.services.student.StudentService;
@@ -57,11 +57,13 @@ public class LunihApplication implements CommandLineRunner {
     private final PostTypeService postTypeService;
     private final ProgramRepo programRepo;
     private final ProgramService programService;
+    private final PostRepo postRepo;
+    private final PostService postService;
 
     @Value("${default.password}")
     private String defaultPassword;
 
-    public LunihApplication(AccountRepo accountRepo, AccountService accountService, StudentRepo studentRepo, StudentService studentService, CompanyRepo companyRepo, CompanyService companyService, UniversityRepo universityRepo, UniversityService universityService, FacultyRepo facultyRepo, FacultyService facultyService, IndustryRepo industryRepo, IndustryService industryService, PostTypeRepo postTypeRepo, PostTypeService postTypeService, ProgramRepo programRepo, ProgramService programService) {
+    public LunihApplication(AccountRepo accountRepo, AccountService accountService, StudentRepo studentRepo, StudentService studentService, CompanyRepo companyRepo, CompanyService companyService, UniversityRepo universityRepo, UniversityService universityService, FacultyRepo facultyRepo, FacultyService facultyService, IndustryRepo industryRepo, IndustryService industryService, PostTypeRepo postTypeRepo, PostTypeService postTypeService, ProgramRepo programRepo, ProgramService programService, PostRepo postRepo, PostService postService) {
         this.accountRepo = accountRepo;
         this.accountService = accountService;
         this.studentRepo = studentRepo;
@@ -78,6 +80,8 @@ public class LunihApplication implements CommandLineRunner {
         this.postTypeService = postTypeService;
         this.programRepo = programRepo;
         this.programService = programService;
+        this.postRepo = postRepo;
+        this.postService = postService;
     }
 
     public static void main(String[] args) {
@@ -90,12 +94,6 @@ public class LunihApplication implements CommandLineRunner {
     }
 
     private void initData() {
-        if (accountRepo.count() == 0) {
-            createAdmin();
-        }
-        if (studentRepo.count() == 0) {
-            createStudent();
-        }
         if (facultyRepo.count() == 0) {
             createFaculty();
         }
@@ -104,6 +102,12 @@ public class LunihApplication implements CommandLineRunner {
         }
         if (programRepo.count() == 0) {
             createProgram();
+        }
+        if (accountRepo.count() == 0) {
+            createAdmin();
+        }
+        if (studentRepo.count() == 0) {
+            createStudent();
         }
         if (universityRepo.count() == 0) {
             createUniversity();
@@ -114,6 +118,39 @@ public class LunihApplication implements CommandLineRunner {
         if (postTypeRepo.count() == 0) {
             createPostType();
         }
+        if (postRepo.count() == 0) {
+            createPost();
+        }
+    }
+
+    private void createPost() {
+        PostDTO dto = new PostDTO();
+        Date date = new Date();
+        Date tomorrowDate = new Date(date.getTime() + (1000 * 60 * 60 * 24));
+
+        dto.setPostType(postTypeRepo.findAll().get(0).getId());
+        dto.setTitleEn("This is a Job Offer Post");
+        dto.setTitleLv("Šis ir darba piedāvājuma ieraksts");
+        dto.setDescriptionEn("Description Job En");
+        dto.setDescriptionLv("Description Job Lv");
+
+        List<Integer> industryList = new ArrayList<>();
+        industryList.add(industryService.listAll().get(0).getId());
+        dto.setIndustryList(industryList);
+        dto.setStartDate(date);
+        dto.setEndDate(tomorrowDate);
+        dto.setNumSlot(10);
+        dto.setAuthor(companyRepo.findAll().get(0).getAccount().getId());
+        postService.create(dto);
+
+        dto.setPostType(postTypeRepo.findAll().get(1).getId());
+        dto.setTitleEn("This is a Thesis Topic Post");
+        dto.setTitleLv("Šis ir diplomdarba tēmas ieraksts");
+        dto.setDescriptionEn("Description Topic En");
+        dto.setDescriptionLv("Description Topic Lv");
+        dto.setNumSlot(3);
+        dto.setAuthor(universityRepo.findAll().get(0).getAccount().getId());
+        postService.create(dto);
     }
 
     private void createPostType() {
@@ -195,6 +232,7 @@ public class LunihApplication implements CommandLineRunner {
         dto.setFirstName("Thien Quoc");
         dto.setSurName("Nguyen");
         dto.setGender(false);
+        dto.setProgram(programRepo.findAll().get(0).getId());
         dto.setBirthDay(bday);
         dto.setPhoneNumber("+37199999999");
         accountService.createNewStudent(dto);

@@ -22,18 +22,33 @@ public class PostController {
         this.service = service;
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<Post>> listAll() {
-//        return null;
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Post> getById(@PathVariable int id) {
-//        return null;
-//    }
-//
-//    @PostMapping
-//    public ResponseEntity<Post> create(@Valid @RequestBody PostDTO dto) {
-//        return null;
-//    }
+    @GetMapping
+    public ResponseEntity<List<Post>> listAll() {
+        return new ResponseEntity<>(service.listAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Post> getById(@PathVariable int id) {
+        return new ResponseEntity<>(service.get(id), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Post> create(@Valid @RequestBody PostDTO dto) {
+        return new ResponseEntity<>(service.create(dto), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Post> update(@PathVariable int id, @Valid @RequestBody PostDTO dto) {
+        return new ResponseEntity<>(service.update(id, dto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/change-status/{id}")
+    public ResponseEntity<Post> changeStatus(@PathVariable int id) {
+        return new ResponseEntity<>(service.changeStatus(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Post> delete(@PathVariable int id) {
+        return new ResponseEntity<>(service.delete(id), HttpStatus.OK);
+    }
 }

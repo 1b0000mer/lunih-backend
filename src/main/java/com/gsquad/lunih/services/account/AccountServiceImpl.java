@@ -77,6 +77,11 @@ public class AccountServiceImpl implements AccountService {
             throw new InvalidException(messageSource.getMessage("error.account.email-empty", null, locale));
         }
 
+        //check exist
+        if (accountRepo.existsByEmail(dto.getEmail())) {
+            throw new InvalidException(String.format(messageSource.getMessage("error.account.email-exist", null, locale), dto.getEmail()));
+        }
+
         if (ObjectUtils.isEmpty(dto.getPassword())) {
             throw new InvalidException(messageSource.getMessage("error.account.password-empty", null, locale));
         }
@@ -107,7 +112,9 @@ public class AccountServiceImpl implements AccountService {
         Student student = new Student();
         student.setStudentID(dto.getStudentID());
         student.setAccount(acc);
-        student.setProgram(programService.get(dto.getProgram()));
+        if (dto.getProgram() != -1) {
+            student.setProgram(programService.get(dto.getProgram()));
+        }
         student.setFirstName(dto.getFirstName());
         student.setSurName(dto.getSurName());
 
@@ -136,6 +143,11 @@ public class AccountServiceImpl implements AccountService {
 
         if (ObjectUtils.isEmpty(dto.getEmail())) {
             throw new InvalidException(messageSource.getMessage("error.account.email-empty", null, locale));
+        }
+
+        //check exist
+        if (accountRepo.existsByEmail(dto.getEmail())) {
+            throw new InvalidException(String.format(messageSource.getMessage("error.account.email-exist", null, locale), dto.getEmail()));
         }
 
         if (ObjectUtils.isEmpty(dto.getPassword())) {
@@ -196,6 +208,10 @@ public class AccountServiceImpl implements AccountService {
             company.setCompanyContactPersonEmail(dto.getCompanyContactPersonEmail());
         }
 
+        if (!ObjectUtils.isEmpty(dto.getCompanyContactPersonDepartment())) {
+            company.setCompanyContactPersonDepartment(dto.getCompanyContactPersonDepartment());
+        }
+
         if (!ObjectUtils.isEmpty(dto.getCompanyContactPersonPhoneNumber())) {
             company.setCompanyContactPersonPhoneNumber(dto.getCompanyContactPersonPhoneNumber());
         }
@@ -210,6 +226,11 @@ public class AccountServiceImpl implements AccountService {
 
         if (ObjectUtils.isEmpty(dto.getEmail())) {
             throw new InvalidException(messageSource.getMessage("error.account.email-empty", null, locale));
+        }
+
+        //check exist
+        if (accountRepo.existsByEmail(dto.getEmail())) {
+            throw new InvalidException(String.format(messageSource.getMessage("error.account.email-exist", null, locale), dto.getEmail()));
         }
 
         if (ObjectUtils.isEmpty(dto.getPassword())) {

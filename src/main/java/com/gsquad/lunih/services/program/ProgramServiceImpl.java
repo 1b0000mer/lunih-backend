@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 @Service
 @Transactional
 public class ProgramServiceImpl implements ProgramService {
@@ -53,7 +54,7 @@ public class ProgramServiceImpl implements ProgramService {
         //get locale code (en, lv)
         Locale locale = LocaleContextHolder.getLocale();
 
-        return programRepo.findById(id).orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.program.id-notfound", null , locale),id)));
+        return programRepo.findById(id).orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.program.id-notfound", null, locale), id)));
     }
 
     @Override
@@ -75,7 +76,6 @@ public class ProgramServiceImpl implements ProgramService {
             throw new InvalidException(messageSource.getMessage("error.program.faculty-empty", null, locale));
         }
 
-
         // TODO: handle logic
         Program program = new Program();
         program.setNameEn(dto.getNameEn());
@@ -86,6 +86,7 @@ public class ProgramServiceImpl implements ProgramService {
         List<Industry> industryList = new ArrayList<>();
         dto.getIndustryList().forEach(industryID -> industryList.add(industryService.get(industryID)));
         program.setIndustryList(industryList);
+
         program.setStatus(true);
 
         programRepo.save(program);
