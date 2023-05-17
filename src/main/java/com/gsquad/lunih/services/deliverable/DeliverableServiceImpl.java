@@ -118,15 +118,15 @@ public class DeliverableServiceImpl implements DeliverableService {
         return deliverable;
     }
 
-   /* @Override
-    public Deliverable changeStatus(int id) {
+    @Override
+    public Deliverable changeStatus(int id, DeliverableDTO dto) {
         Deliverable deliverable = get(id);
 
-        deliverable.setStatus(!deliverable.getStatus());
+        deliverable.setStatus(dto.getStatus());
 
         deliverableRepo.save(deliverable);
         return deliverable;
-    }*/
+    }
 
     @Override
     public Deliverable delete(int id) {

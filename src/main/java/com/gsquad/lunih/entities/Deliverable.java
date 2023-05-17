@@ -46,6 +46,9 @@ public class Deliverable {
     @CreatedBy
     private String createdBy;
 
+    @ApiModelProperty(value = "available/submitted/overdue")
+    private String status;
+
 //    @LastModifiedDate
 //    @LastModifiedBy
 }

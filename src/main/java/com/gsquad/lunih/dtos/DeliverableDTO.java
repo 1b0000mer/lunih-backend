@@ -12,4 +12,5 @@ public class DeliverableDTO {
     private String fileAttachment;
     private Date createdDate;
     private String createdBy;
+    private String status;
 }
