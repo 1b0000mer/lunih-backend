@@ -20,7 +20,7 @@ public interface DeliverableService {
 
     Deliverable update(int id, DeliverableDTO dto);
 
-    Deliverable changeStatus(int id, DeliverableDTO dto);
+//    Deliverable changeStatus(int id, DeliverableDTO dto);
 
     Deliverable delete(int id);
 }

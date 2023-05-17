@@ -20,6 +20,7 @@ import com.gsquad.lunih.services.post.PostService;
 import com.gsquad.lunih.services.post_type.PostTypeService;
 import com.gsquad.lunih.services.student.StudentService;
 import com.gsquad.lunih.utils.PageUtils;
+import com.gsquad.lunih.utils.TimeUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
@@ -38,7 +39,6 @@ import java.util.Locale;
 public class DeliverableServiceImpl implements DeliverableService {
 
     private final DeliverableRepo deliverableRepo;
-
     private final MessageSource messageSource;
 
     public DeliverableServiceImpl(DeliverableRepo deliverableRepo, MessageSource messageSource) {
@@ -70,14 +70,15 @@ public class DeliverableServiceImpl implements DeliverableService {
     public Deliverable create(DeliverableDTO dto) {
         //get locale code (en, lv)
         Locale locale = LocaleContextHolder.getLocale();
+        Date toDay = new Date();
 
         // TODO: validate input before handle
         if (ObjectUtils.isEmpty(dto.getNameEn())) {
-            throw new InvalidException(messageSource.getMessage("error.faculty.nameEn-empty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.deliverable.nameEn-empty", null, locale));
         }
 
         if (ObjectUtils.isEmpty(dto.getNameLv())) {
-            throw new InvalidException(messageSource.getMessage("error.faculty.nameLv-empty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.deliverable.nameLv-empty", null, locale));
         }
 
         // TODO: handle logic
@@ -85,9 +86,15 @@ public class DeliverableServiceImpl implements DeliverableService {
         deliverable.setNameEn(dto.getNameEn());
         deliverable.setNameLv(dto.getNameLv());
         deliverable.setFileAttachment(dto.getFileAttachment());
-        deliverable.setCreatedDate(dto.getCreatedDate());
-        deliverable.setCreatedBy(dto.getCreatedBy());
+        deliverable.setStatus(dto.getStatus());
 
+        if (!ObjectUtils.isEmpty(dto.getDeadLine())) {
+            if (TimeUtils.checkTime(toDay, dto.getDeadLine())) {
+                throw new InvalidException(messageSource.getMessage("error.deliverable.time-invalid", null, locale));
+            } else {
+                deliverable.setDeadLine(dto.getDeadLine());
+            }
+        }
 
         deliverableRepo.save(deliverable);
         return deliverable;
@@ -97,6 +104,7 @@ public class DeliverableServiceImpl implements DeliverableService {
     public Deliverable update(int id, DeliverableDTO dto) {
         //get locale code (en, lv)
         Locale locale = LocaleContextHolder.getLocale();
+        Date toDay = new Date();
 
         Deliverable deliverable = get(id);
 
@@ -109,24 +117,33 @@ public class DeliverableServiceImpl implements DeliverableService {
             throw new InvalidException(messageSource.getMessage("error.deliverable.nameLv-empty", null, locale));
         }
 
+        if (!ObjectUtils.isEmpty(dto.getDeadLine())) {
+            if (TimeUtils.checkTime(toDay, dto.getDeadLine())) {
+                throw new InvalidException(messageSource.getMessage("error.deliverable.time-invalid", null, locale));
+            } else {
+                deliverable.setDeadLine(dto.getDeadLine());
+            }
+        }
+
         // TODO: handle logic
         deliverable.setNameEn(dto.getNameEn());
         deliverable.setNameLv(dto.getNameLv());
         deliverable.setFileAttachment(dto.getFileAttachment());
-
-        deliverableRepo.save(deliverable);
-        return deliverable;
-    }
-
-    @Override
-    public Deliverable changeStatus(int id, DeliverableDTO dto) {
-        Deliverable deliverable = get(id);
-
         deliverable.setStatus(dto.getStatus());
 
         deliverableRepo.save(deliverable);
         return deliverable;
     }
+
+//    @Override
+//    public Deliverable changeStatus(int id, DeliverableDTO dto) {
+//        Deliverable deliverable = get(id);
+//
+//        deliverable.setStatus(dto.getStatus());
+//
+//        deliverableRepo.save(deliverable);
+//        return deliverable;
+//    }
 
     @Override
     public Deliverable delete(int id) {

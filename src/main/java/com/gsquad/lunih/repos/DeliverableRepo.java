@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface DeliverableRepo extends JpaRepository<Deliverable, Integer> {
     @Query(
-            value = "SELECT * FROM Deliverable p " +
-                    "WHERE (p.titleEn like %?1% OR p.titleLv like %?1%)",
+            value = "SELECT * FROM Deliverable d " +
+                    "WHERE d.nameEn like %?1% OR d.nameLv like %?1%",
             countQuery = "SELECT count(*) FROM Deliverable",
             nativeQuery = true
     )

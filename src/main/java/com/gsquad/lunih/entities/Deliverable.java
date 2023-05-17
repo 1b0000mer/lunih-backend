@@ -38,6 +38,9 @@ public class Deliverable {
     @ApiModelProperty(value = "Id file")
     private String fileAttachment;
 
+    @ApiModelProperty(value = "Set a deadline for deliverable, can be null")
+    private Date deadLine;
+
     @JsonIgnore
     @CreatedDate
     private Date createdDate;

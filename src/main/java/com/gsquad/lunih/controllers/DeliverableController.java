@@ -60,11 +60,11 @@ public class DeliverableController {
         return new ResponseEntity<>(service.update(id, dto), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Change status deliverable")
-    @DeleteMapping("/change-status/{id}")
-    public ResponseEntity<Deliverable> changeStatus(@PathVariable int id, @Valid @RequestBody DeliverableDTO dto) {
-        return new ResponseEntity<>(service.changeStatus(id, dto), HttpStatus.OK);
-    }
+//    @ApiOperation(value = "Change status deliverable")
+//    @DeleteMapping("/change-status/{id}")
+//    public ResponseEntity<Deliverable> changeStatus(@PathVariable int id, @Valid @RequestBody DeliverableDTO dto) {
+//        return new ResponseEntity<>(service.changeStatus(id, dto), HttpStatus.OK);
+//    }
 
     @ApiOperation(value = "Delete deliverable")
     @DeleteMapping("/{id}")
