@@ -5,10 +5,12 @@ import com.gsquad.lunih.entities.Post;
 import com.gsquad.lunih.services.post.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
+import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -50,5 +52,11 @@ public class PostController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Post> delete(@PathVariable int id) {
         return new ResponseEntity<>(service.delete(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/university")
+//    @PreAuthorize("hasRole('UNIVERSITY')")
+    public ResponseEntity<Post> universityCreatePost(@Valid @RequestBody PostDTO dto, Principal principal) {
+        return new ResponseEntity<>(service.create(dto), HttpStatus.OK);
     }
 }
