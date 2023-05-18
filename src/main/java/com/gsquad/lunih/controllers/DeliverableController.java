@@ -1,11 +1,9 @@
 package com.gsquad.lunih.controllers;
 
-import com.gsquad.lunih.dtos.DeliverableDTO;
-import com.gsquad.lunih.dtos.categories.FacultyDTO;
+import com.gsquad.lunih.dtos.deliverables.ChangeStatusDTO;
+import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
 import com.gsquad.lunih.entities.Deliverable;
-import com.gsquad.lunih.entities.categories.Faculty;
 import com.gsquad.lunih.services.deliverable.DeliverableService;
-import com.gsquad.lunih.services.faculty.FacultyService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -60,11 +58,11 @@ public class DeliverableController {
         return new ResponseEntity<>(service.update(id, dto), HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "Change status deliverable")
-//    @DeleteMapping("/change-status/{id}")
-//    public ResponseEntity<Deliverable> changeStatus(@PathVariable int id, @Valid @RequestBody DeliverableDTO dto) {
-//        return new ResponseEntity<>(service.changeStatus(id, dto), HttpStatus.OK);
-//    }
+    @ApiOperation(value = "Change status deliverable")
+    @DeleteMapping("/change-status/{id}")
+    public ResponseEntity<Deliverable> changeStatus(@PathVariable int id, @Valid @RequestBody ChangeStatusDTO dto) {
+        return new ResponseEntity<>(service.changeStatus(id, dto), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Delete deliverable")
     @DeleteMapping("/{id}")

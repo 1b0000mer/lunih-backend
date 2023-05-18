@@ -107,6 +107,7 @@ public class AccountServiceImpl implements AccountService {
         acc.setEmail(dto.getEmail());
         acc.setPassword(dto.getPassword());
         acc.setRole(EnumRole.ROLE_STUDENT.name());
+        acc.setStatus(true);
         accountRepo.save(acc);
 
         Student student = new Student();
@@ -162,6 +163,7 @@ public class AccountServiceImpl implements AccountService {
         acc.setEmail(dto.getEmail());
         acc.setPassword(dto.getPassword());
         acc.setRole(EnumRole.ROLE_COMPANY.name());
+        acc.setStatus(true);
         accountRepo.save(acc);
 
         Company company = new Company();
@@ -245,6 +247,7 @@ public class AccountServiceImpl implements AccountService {
         acc.setEmail(dto.getEmail());
         acc.setPassword(dto.getPassword());
         acc.setRole(EnumRole.ROLE_UNIVERSITY.name());
+        acc.setStatus(true);
         accountRepo.save(acc);
 
         University university = new University();
@@ -283,6 +286,7 @@ public class AccountServiceImpl implements AccountService {
         acc.setEmail(dto.getEmail());
         acc.setPassword(dto.getPassword());
         acc.setRole(EnumRole.ROLE_ADMIN.name());
+        acc.setStatus(true);
 
         accountRepo.save(acc);
         return acc;

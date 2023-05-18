@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -214,4 +215,22 @@ public class PostServiceImpl implements PostService {
         postRepo.delete(post);
         return post;
     }
+
+//    @Override
+//    public Post studentApplyPost(Principal principal, int id) {
+//        Student student = studentService.getCurrent(principal);
+//        Post post = get(id);
+//        if (post.getStudentList().size() < post.getNumSlot()) {
+//            List<Student> studentList = post.getStudentList();
+//            studentList.add(student);
+//            post.setStudentList(studentList);
+//        } else {
+//            List<Student> queueList = post.getQueueList();
+//            queueList.add(student);
+//            post.setQueueList(queueList);
+//        }
+//
+//        postRepo.save(post);
+//        return post;
+//    }
 }

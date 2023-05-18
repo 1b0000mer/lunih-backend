@@ -1,24 +1,11 @@
 package com.gsquad.lunih.services.deliverable;
 
-import com.gsquad.lunih.dtos.DeliverableDTO;
-import com.gsquad.lunih.dtos.PostDTO;
-import com.gsquad.lunih.dtos.categories.FacultyDTO;
+import com.gsquad.lunih.dtos.deliverables.ChangeStatusDTO;
+import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
 import com.gsquad.lunih.entities.Deliverable;
-import com.gsquad.lunih.entities.Post;
-import com.gsquad.lunih.entities.Student;
-import com.gsquad.lunih.entities.categories.Faculty;
-import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.DeliverableRepo;
-import com.gsquad.lunih.repos.PostRepo;
-import com.gsquad.lunih.repos.categories.FacultyRepo;
-import com.gsquad.lunih.services.account.AccountService;
-import com.gsquad.lunih.services.faculty.FacultyService;
-import com.gsquad.lunih.services.industry.IndustryService;
-import com.gsquad.lunih.services.post.PostService;
-import com.gsquad.lunih.services.post_type.PostTypeService;
-import com.gsquad.lunih.services.student.StudentService;
 import com.gsquad.lunih.utils.PageUtils;
 import com.gsquad.lunih.utils.TimeUtils;
 import org.springframework.context.MessageSource;
@@ -29,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -135,15 +121,15 @@ public class DeliverableServiceImpl implements DeliverableService {
         return deliverable;
     }
 
-//    @Override
-//    public Deliverable changeStatus(int id, DeliverableDTO dto) {
-//        Deliverable deliverable = get(id);
-//
-//        deliverable.setStatus(dto.getStatus());
-//
-//        deliverableRepo.save(deliverable);
-//        return deliverable;
-//    }
+    @Override
+    public Deliverable changeStatus(int id, ChangeStatusDTO dto) {
+        Deliverable deliverable = get(id);
+
+        deliverable.setStatus(dto.getStatus());
+
+        deliverableRepo.save(deliverable);
+        return deliverable;
+    }
 
     @Override
     public Deliverable delete(int id) {
