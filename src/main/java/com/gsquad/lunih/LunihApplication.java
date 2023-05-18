@@ -227,7 +227,7 @@ public class LunihApplication implements CommandLineRunner {
         Date bday = new Date();
         StudentAccountDTO dto = new StudentAccountDTO();
         dto.setEmail("thienquoc98@gmail.com");
-        dto.setPassword("123456");
+        dto.setPassword(defaultPassword);
         dto.setStudentID("22021P");
         dto.setFirstName("Thien Quoc");
         dto.setSurName("Nguyen");
@@ -240,7 +240,7 @@ public class LunihApplication implements CommandLineRunner {
         studentService.approveStudent("22021P", approveStudentDTO);
 
         dto.setEmail("test@gmail.com");
-        dto.setPassword("123456");
+        dto.setPassword(defaultPassword);
         dto.setStudentID("22022P");
         dto.setFirstName("Test Quoc");
         dto.setSurName("Nguyen");
