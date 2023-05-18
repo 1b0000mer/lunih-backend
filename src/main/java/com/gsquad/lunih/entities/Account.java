@@ -32,5 +32,5 @@ public class Account {
     private String role = null;
 
     @ApiModelProperty(value = "activate/deactivate account")
-    private Boolean status = true;
+    private Boolean status;
 }

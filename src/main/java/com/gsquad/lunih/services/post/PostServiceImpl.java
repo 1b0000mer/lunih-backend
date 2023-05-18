@@ -1,6 +1,7 @@
 package com.gsquad.lunih.services.post;
 
 import com.gsquad.lunih.dtos.PostDTO;
+import com.gsquad.lunih.entities.Deliverable;
 import com.gsquad.lunih.entities.Post;
 import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.entities.categories.Industry;
@@ -8,6 +9,7 @@ import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.PostRepo;
 import com.gsquad.lunih.services.account.AccountService;
+import com.gsquad.lunih.services.deliverable.DeliverableService;
 import com.gsquad.lunih.services.industry.IndustryService;
 import com.gsquad.lunih.services.post_type.PostTypeService;
 import com.gsquad.lunih.services.student.StudentService;
@@ -21,9 +23,10 @@ import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static com.gsquad.lunih.utils.TimeUtils.checkTime;
 
 @Service
 @Transactional
@@ -35,14 +38,16 @@ public class PostServiceImpl implements PostService {
     private final IndustryService industryService;
     private final PostTypeService postTypeService;
     private final AccountService accountService;
+    private final DeliverableService deliverableService;
 
-    public PostServiceImpl(PostRepo postRepo, StudentService studentService, MessageSource messageSource, IndustryService industryService, PostTypeService postTypeService, AccountService accountService) {
+    public PostServiceImpl(PostRepo postRepo, StudentService studentService, MessageSource messageSource, IndustryService industryService, PostTypeService postTypeService, AccountService accountService, DeliverableService deliverableService) {
         this.postRepo = postRepo;
         this.studentService = studentService;
         this.messageSource = messageSource;
         this.industryService = industryService;
         this.postTypeService = postTypeService;
         this.accountService = accountService;
+        this.deliverableService = deliverableService;
     }
 
     @Override
@@ -119,10 +124,9 @@ public class PostServiceImpl implements PostService {
         dto.getQueueList().forEach(studentID -> queueList.add(studentService.get(String.valueOf(studentID))));
         post.setQueueList(queueList);
 
-        // TODO: missing deliverable Service
-        /*List<Deliverable> deliverables = new ArrayList<>();
-        dto.getDeliverables().forEach(deliverableID -> deliverables.add(deliverableService.get(deliverableID.getId())));
-        post.setDeliverables(deliverables);*/
+        List<Deliverable> deliverables = new ArrayList<>();
+        dto.getDeliverables().forEach(deliverableID -> deliverables.add(deliverableService.get(deliverableID)));
+        post.setDeliverables(deliverables);
 
         // TODO: status of the post, true for now
         post.setStatus(true);
@@ -186,10 +190,9 @@ public class PostServiceImpl implements PostService {
         dto.getQueueList().forEach(studentID -> queueList.add(studentService.get(String.valueOf(studentID))));
         post.setQueueList(queueList);
 
-        // TODO: missing deliverable Service
-        /*List<Deliverable> deliverables = new ArrayList<>();
-        dto.getDeliverables().forEach(deliverableID -> deliverables.add(deliverableService.get(deliverableID.getId())));
-        post.setDeliverables(deliverables);*/
+        List<Deliverable> deliverables = new ArrayList<>();
+        dto.getDeliverables().forEach(deliverableID -> deliverables.add(deliverableService.get(deliverableID)));
+        post.setDeliverables(deliverables);
 
         postRepo.save(post);
         return post;
@@ -211,9 +214,4 @@ public class PostServiceImpl implements PostService {
         postRepo.delete(post);
         return post;
     }
-
-    private boolean checkTime(Date fromDate, Date toDate) {
-        return fromDate.after(toDate);
-    }
-
 }
