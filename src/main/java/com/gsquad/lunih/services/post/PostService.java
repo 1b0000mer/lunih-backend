@@ -23,7 +23,8 @@ public interface PostService {
 
     Post delete(int id);
 
-//    Post studentApplyPost(Principal principal, int id);
+    Post studentApplyPost(Principal principal, int id);
 
-//    Post UniversityPublishPost(Principal principal, PostDTO dto);
+
+    Post universityPublishPost(Principal principal, PostDTO dto);
 }
