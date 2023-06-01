@@ -2,6 +2,7 @@ package com.gsquad.lunih.controllers;
 
 import com.gsquad.lunih.dtos.PostDTO;
 import com.gsquad.lunih.entities.Post;
+import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.services.post.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,11 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<Post>> listAll() {
         return new ResponseEntity<>(service.listAll(), HttpStatus.OK);
+    }
+
+    @PutMapping("/student-apply/{id}")
+    public ResponseEntity<Post> studentApplyPost(Principal principal, @PathVariable int id) {
+        return new ResponseEntity<>(service.studentApplyPost(principal, id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -58,6 +64,6 @@ public class PostController {
     @PostMapping("/university")
 //    @PreAuthorize("hasRole('UNIVERSITY')")
     public ResponseEntity<Post> universityCreatePost(@Valid @RequestBody PostDTO dto, Principal principal) {
-        return new ResponseEntity<>(service.create(dto), HttpStatus.OK);
+        return new ResponseEntity<>(service.universityPublishPost(principal, dto), HttpStatus.OK);
     }
 }

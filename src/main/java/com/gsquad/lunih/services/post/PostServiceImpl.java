@@ -1,9 +1,7 @@
 package com.gsquad.lunih.services.post;
 
 import com.gsquad.lunih.dtos.PostDTO;
-import com.gsquad.lunih.entities.Deliverable;
-import com.gsquad.lunih.entities.Post;
-import com.gsquad.lunih.entities.Student;
+import com.gsquad.lunih.entities.*;
 import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
@@ -13,6 +11,7 @@ import com.gsquad.lunih.services.deliverable.DeliverableService;
 import com.gsquad.lunih.services.industry.IndustryService;
 import com.gsquad.lunih.services.post_type.PostTypeService;
 import com.gsquad.lunih.services.student.StudentService;
+import com.gsquad.lunih.services.university.UniversityService;
 import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -40,8 +39,9 @@ public class PostServiceImpl implements PostService {
     private final PostTypeService postTypeService;
     private final AccountService accountService;
     private final DeliverableService deliverableService;
+    private final UniversityService universityService;
 
-    public PostServiceImpl(PostRepo postRepo, StudentService studentService, MessageSource messageSource, IndustryService industryService, PostTypeService postTypeService, AccountService accountService, DeliverableService deliverableService) {
+    public PostServiceImpl(PostRepo postRepo, StudentService studentService, MessageSource messageSource, IndustryService industryService, PostTypeService postTypeService, AccountService accountService, DeliverableService deliverableService, UniversityService universityService) {
         this.postRepo = postRepo;
         this.studentService = studentService;
         this.messageSource = messageSource;
@@ -49,6 +49,7 @@ public class PostServiceImpl implements PostService {
         this.postTypeService = postTypeService;
         this.accountService = accountService;
         this.deliverableService = deliverableService;
+        this.universityService = universityService;
     }
 
     @Override
@@ -217,21 +218,27 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
-//    @Override
-//    public Post studentApplyPost(Principal principal, int id) {
-//        Student student = studentService.getCurrent(principal);
-//        Post post = get(id);
-//        if (post.getStudentList().size() < post.getNumSlot()) {
-//            List<Student> studentList = post.getStudentList();
-//            studentList.add(student);
-//            post.setStudentList(studentList);
-//        } else {
-//            List<Student> queueList = post.getQueueList();
-//            queueList.add(student);
-//            post.setQueueList(queueList);
-//        }
-//
-//        postRepo.save(post);
-//        return post;
-//    }
+    @Override
+    public Post studentApplyPost(Principal principal, int id) {
+        Student student = studentService.getCurrent(principal);
+        Post post = get(id);
+        if (post.getStudentList().size() < post.getNumSlot()) {
+            List<Student> studentList = post.getStudentList();
+            studentList.add(student);
+            post.setStudentList(studentList);
+        } else {
+            List<Student> queueList = post.getQueueList();
+            queueList.add(student);
+            post.setQueueList(queueList);
+        }
+
+        postRepo.save(post);
+        return post;
+    }
+    @Override
+    public Post universityPublishPost(Principal principal, PostDTO dto){
+        University university = universityService.getCurrent(principal);
+        dto.setAuthor(university.getAccount().getId());
+       return create(dto);
+    }
 }

@@ -60,9 +60,11 @@ public class Post {
     private int numSlot;
 
     @ManyToMany
+    @Column(nullable = true)
     private List<Student> studentList = new ArrayList<>();
 
     @ManyToMany
+    @Column(nullable = true)
     private List<Student> queueList = new ArrayList<>();
 
     @OneToOne
