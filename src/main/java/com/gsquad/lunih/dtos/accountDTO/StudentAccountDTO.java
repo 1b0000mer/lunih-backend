@@ -23,7 +23,7 @@ public class StudentAccountDTO {
     
     private Date birthDay;
 
-    private Boolean gender;
+    private String gender;
 
     private String phoneNumber;
 }

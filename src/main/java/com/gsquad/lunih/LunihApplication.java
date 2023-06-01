@@ -231,7 +231,7 @@ public class LunihApplication implements CommandLineRunner {
         dto.setStudentID("22021P");
         dto.setFirstName("Thien Quoc");
         dto.setSurName("Nguyen");
-        dto.setGender(false);
+        dto.setGender("Male");
         dto.setProgram(programRepo.findAll().get(0).getId());
         dto.setBirthDay(bday);
         dto.setPhoneNumber("+37199999999");
@@ -244,7 +244,7 @@ public class LunihApplication implements CommandLineRunner {
         dto.setStudentID("22022P");
         dto.setFirstName("Test Quoc");
         dto.setSurName("Nguyen");
-        dto.setGender(true);
+        dto.setGender("Female");
         dto.setBirthDay(bday);
         dto.setPhoneNumber("+37199999999");
         accountService.createNewStudent(dto);

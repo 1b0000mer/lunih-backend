@@ -212,6 +212,7 @@ public class PostServiceImpl implements PostService {
     public Post delete(int id) {
         Post post = get(id);
 
+
         postRepo.delete(post);
         return post;
     }

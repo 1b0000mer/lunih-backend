@@ -42,8 +42,8 @@ public class Student {
 
     private Date birthDay;
 
-    @ApiModelProperty(value = "female : 1, male: 0")
-    private Boolean gender;
+//    @ApiModelProperty(value = "female : 1, male: 0")
+    private String gender;
 
     private String phoneNumber;
 
