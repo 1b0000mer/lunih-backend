@@ -1,8 +1,10 @@
 package com.gsquad.lunih.controllers;
 
+import com.gsquad.lunih.dtos.PostDTO;
 import com.gsquad.lunih.dtos.deliverables.ChangeStatusDTO;
 import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
 import com.gsquad.lunih.entities.Deliverable;
+import com.gsquad.lunih.entities.Post;
 import com.gsquad.lunih.services.deliverable.DeliverableService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -28,7 +31,7 @@ public class DeliverableController {
     public ResponseEntity<Page<Deliverable>> listAllPaging(
             @RequestParam(value = "search", required = false, defaultValue = "") String search,
             @RequestParam(value = "page", required = false, defaultValue = "${paging.default.page}") int page,
-            @RequestParam(value = "size", required = false, defaultValue = "${paging.default.size}")int size,
+            @RequestParam(value = "size", required = false, defaultValue = "${paging.default.size}") int size,
             @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
             @RequestParam(value = "column", required = false, defaultValue = "id") String column
     ) {
@@ -68,5 +71,11 @@ public class DeliverableController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Deliverable> delete(@PathVariable int id) {
         return new ResponseEntity<>(service.delete(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/deliverable")
+//    @PreAuthorize("hasRole('UNIVERSITY')")
+    public ResponseEntity<Deliverable> studentUplodeDeliverable(@Valid @RequestBody DeliverableDTO dto, Principal principal) {
+        return new ResponseEntity<>(service.studentUplodeDeliverable(principal, dto), HttpStatus.OK);
     }
 }
