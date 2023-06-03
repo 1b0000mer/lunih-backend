@@ -65,4 +65,9 @@ public class PostController {
     public ResponseEntity<Post> universityCreatePost(@Valid @RequestBody PostDTO dto, Principal principal) {
         return new ResponseEntity<>(service.universityPublishPost(principal, dto), HttpStatus.OK);
     }
+    @PostMapping("/company")
+//    @PreAuthorize("hasRole('UNIVERSITY')")
+    public ResponseEntity<Post> companyCreatePost(@Valid @RequestBody PostDTO dto, Principal principal) {
+        return new ResponseEntity<>(service.companyPublishPost(principal, dto), HttpStatus.OK);
+    }
 }

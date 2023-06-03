@@ -27,4 +27,5 @@ public interface PostService {
 
 
     Post universityPublishPost(Principal principal, PostDTO dto);
+    Post companyPublishPost(Principal principal, PostDTO dto);
 }
