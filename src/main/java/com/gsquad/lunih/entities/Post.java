@@ -59,12 +59,12 @@ public class Post {
     @ApiModelProperty(value = "number of slot are allowed. Job/Internship -> slot | Thesis/Research 1 -> individual, >= 2 -> team")
     private int numSlot;
 
-    @ManyToMany
-    @Column(nullable = true)
+    @OneToMany
+    @JoinTable(name = "post_student_list")
     private List<Student> studentList = new ArrayList<>();
 
-    @ManyToMany
-    @Column(nullable = true)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "post_queue_list")
     private List<Student> queueList = new ArrayList<>();
 
     @OneToOne

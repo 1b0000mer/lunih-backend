@@ -219,8 +219,22 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post studentApplyPost(Principal principal, int id) {
+        Locale locale = LocaleContextHolder.getLocale();
+
         Student student = studentService.getCurrent(principal);
         Post post = get(id);
+
+//        //already applied other post
+//        if (postRepo.findPostsByStudentID(student.getStudentID()).size() > 0) {
+//            throw new InvalidException(String.format(messageSource.getMessage("error.student.post-applied", null, locale), student.getStudentID()));
+//        }
+//
+//        //already applied or on queue list
+//        if (post.getStudentList().contains(student) || post.getQueueList().contains(student)) {
+//            throw new InvalidException(String.format(messageSource.getMessage("error.post.student-existed", null, locale), student.getStudentID()));
+//        }
+
+
         if (post.getStudentList().size() < post.getNumSlot()) {
             List<Student> studentList = post.getStudentList();
             studentList.add(student);
