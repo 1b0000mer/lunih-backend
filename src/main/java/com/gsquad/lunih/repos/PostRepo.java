@@ -5,6 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface PostRepo extends JpaRepository <Post, Integer> {
 
@@ -15,4 +18,7 @@ public interface PostRepo extends JpaRepository <Post, Integer> {
             nativeQuery = true
     )
     Page<Post> getAllPostPaging(String search, Pageable pageable);
+
+    @Query("SELECT p FROM Post p JOIN p.studentList s WHERE s.studentID = :studentID")
+    List<Post> findPostsByStudentID(@Param("studentID") String studentID);
 }

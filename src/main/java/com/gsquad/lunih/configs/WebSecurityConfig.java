@@ -32,6 +32,7 @@ public class WebSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/rest/login/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/rest/account/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
