@@ -148,7 +148,7 @@ public class LunihApplication implements CommandLineRunner {
         dto.setTitleLv("Šis ir diplomdarba tēmas ieraksts");
         dto.setDescriptionEn("Description Topic En");
         dto.setDescriptionLv("Description Topic Lv");
-        dto.setNumSlot(3);
+        dto.setNumSlot(1);
         dto.setAuthor(universityRepo.findAll().get(0).getAccount().getId());
         postService.create(dto);
     }

@@ -25,6 +25,5 @@ public interface PostService {
 
     Post studentApplyPost(Principal principal, int id);
 
-
     Post universityPublishPost(Principal principal, PostDTO dto);
 }
