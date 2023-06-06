@@ -1,6 +1,7 @@
 package com.gsquad.lunih.services.post;
 
 import com.gsquad.lunih.dtos.PostDTO;
+import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
 import com.gsquad.lunih.entities.*;
 import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.exceptions.InvalidException;
@@ -263,4 +264,10 @@ public class PostServiceImpl implements PostService {
         dto.setAuthor(company.getAccount().getId());
         return create(dto);
     }
+
+//    @Override
+//    public Post studentUplodeDeliverable(Principal principal, DeliverableDTO dto){
+//        Student student = studentService.getCurrent(principal);
+//        return create(dto);
+//    }
 }

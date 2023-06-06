@@ -72,10 +72,4 @@ public class DeliverableController {
     public ResponseEntity<Deliverable> delete(@PathVariable int id) {
         return new ResponseEntity<>(service.delete(id), HttpStatus.OK);
     }
-
-    @PostMapping("/deliverable")
-//    @PreAuthorize("hasRole('UNIVERSITY')")
-    public ResponseEntity<Deliverable> studentUplodeDeliverable(@Valid @RequestBody DeliverableDTO dto, Principal principal) {
-        return new ResponseEntity<>(service.studentUplodeDeliverable(principal, dto), HttpStatus.OK);
-    }
 }

@@ -1,6 +1,7 @@
 package com.gsquad.lunih.services.post;
 
 import com.gsquad.lunih.dtos.PostDTO;
+import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
 import com.gsquad.lunih.entities.Post;
 import org.springframework.data.domain.Page;
 
@@ -27,4 +28,6 @@ public interface PostService {
 
     Post universityPublishPost(Principal principal, PostDTO dto);
     Post companyPublishPost(Principal principal, PostDTO dto);
+//    Post studentUplodeDeliverable(Principal principal, DeliverableDTO dto);
+
 }

@@ -143,9 +143,4 @@ public class DeliverableServiceImpl implements DeliverableService {
         deliverableRepo.delete(deliverable);
         return deliverable;
     }
-    @Override
-    public Deliverable studentUplodeDeliverable(Principal principal, DeliverableDTO dto){
-        Student student = studentService.getCurrent(principal);
-        return create(dto);
-    }
 }

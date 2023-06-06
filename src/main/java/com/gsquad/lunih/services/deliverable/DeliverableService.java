@@ -25,6 +25,5 @@ public interface DeliverableService {
     Deliverable changeStatus(int id, ChangeStatusDTO dto);
 
     Deliverable delete(int id);
-    Deliverable studentUplodeDeliverable(Principal principal, DeliverableDTO dto);
 }
 
