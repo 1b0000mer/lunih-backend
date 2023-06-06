@@ -1,12 +1,14 @@
 package com.gsquad.lunih.services.post;
 
 import com.gsquad.lunih.dtos.PostDTO;
+import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
 import com.gsquad.lunih.entities.*;
 import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.PostRepo;
 import com.gsquad.lunih.services.account.AccountService;
+import com.gsquad.lunih.services.company.CompanyService;
 import com.gsquad.lunih.services.deliverable.DeliverableService;
 import com.gsquad.lunih.services.industry.IndustryService;
 import com.gsquad.lunih.services.post_type.PostTypeService;
@@ -40,8 +42,9 @@ public class PostServiceImpl implements PostService {
     private final AccountService accountService;
     private final DeliverableService deliverableService;
     private final UniversityService universityService;
+    private final CompanyService companyService;
 
-    public PostServiceImpl(PostRepo postRepo, StudentService studentService, MessageSource messageSource, IndustryService industryService, PostTypeService postTypeService, AccountService accountService, DeliverableService deliverableService, UniversityService universityService) {
+    public PostServiceImpl(PostRepo postRepo, StudentService studentService, MessageSource messageSource, IndustryService industryService, PostTypeService postTypeService, AccountService accountService, DeliverableService deliverableService, UniversityService universityService, CompanyService companyService) {
         this.postRepo = postRepo;
         this.studentService = studentService;
         this.messageSource = messageSource;
@@ -50,6 +53,7 @@ public class PostServiceImpl implements PostService {
         this.accountService = accountService;
         this.deliverableService = deliverableService;
         this.universityService = universityService;
+        this.companyService = companyService;
     }
 
     @Override
@@ -254,4 +258,16 @@ public class PostServiceImpl implements PostService {
         dto.setAuthor(university.getAccount().getId());
        return create(dto);
     }
+    @Override
+    public Post companyPublishPost(Principal principal, PostDTO dto){
+        Company company = companyService.getCurrent(principal);
+        dto.setAuthor(company.getAccount().getId());
+        return create(dto);
+    }
+
+//    @Override
+//    public Post studentUplodeDeliverable(Principal principal, DeliverableDTO dto){
+//        Student student = studentService.getCurrent(principal);
+//        return create(dto);
+//    }
 }

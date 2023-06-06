@@ -3,9 +3,11 @@ package com.gsquad.lunih.services.deliverable;
 import com.gsquad.lunih.dtos.deliverables.ChangeStatusDTO;
 import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
 import com.gsquad.lunih.entities.Deliverable;
+import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.DeliverableRepo;
+import com.gsquad.lunih.services.student.StudentService;
 import com.gsquad.lunih.utils.PageUtils;
 import com.gsquad.lunih.utils.TimeUtils;
 import org.springframework.context.MessageSource;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -26,10 +29,12 @@ public class DeliverableServiceImpl implements DeliverableService {
 
     private final DeliverableRepo deliverableRepo;
     private final MessageSource messageSource;
+    private final StudentService studentService;
 
-    public DeliverableServiceImpl(DeliverableRepo deliverableRepo, MessageSource messageSource) {
+    public DeliverableServiceImpl(DeliverableRepo deliverableRepo, MessageSource messageSource, StudentService studentService) {
         this.deliverableRepo = deliverableRepo;
         this.messageSource = messageSource;
+        this.studentService = studentService;
     }
 
     @Override

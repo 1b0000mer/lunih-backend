@@ -1,6 +1,8 @@
 package com.gsquad.lunih.controllers;
 
 import com.gsquad.lunih.dtos.PostDTO;
+import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
+import com.gsquad.lunih.entities.Deliverable;
 import com.gsquad.lunih.entities.Post;
 import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.services.post.PostService;
@@ -66,4 +68,15 @@ public class PostController {
     public ResponseEntity<Post> universityCreatePost(@Valid @RequestBody PostDTO dto, Principal principal) {
         return new ResponseEntity<>(service.universityPublishPost(principal, dto), HttpStatus.OK);
     }
+    @PostMapping("/company")
+//    @PreAuthorize("hasRole('UNIVERSITY')")
+    public ResponseEntity<Post> companyCreatePost(@Valid @RequestBody PostDTO dto, Principal principal) {
+        return new ResponseEntity<>(service.companyPublishPost(principal, dto), HttpStatus.OK);
+    }
+
+//    @PostMapping("/deliverable")
+////    @PreAuthorize("hasRole('UNIVERSITY')")
+//    public ResponseEntity<Deliverable> studentUplodeDeliverable(@Valid @RequestBody DeliverableDTO dto, Principal principal) {
+//        return new ResponseEntity<>(service.studentUplodeDeliverable(principal, dto), HttpStatus.OK);
+//    }
 }
