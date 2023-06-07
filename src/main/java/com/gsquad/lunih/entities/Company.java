@@ -42,7 +42,7 @@ public class Company {
     @ApiModelProperty(value = "get from enumCompanyType")
     private String companyType;
 
-    @OneToMany
+    @ManyToMany
     private List<Industry> industryList;
 
     private String companyAddress;

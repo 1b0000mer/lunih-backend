@@ -51,7 +51,7 @@ public class Student {
     @ApiModelProperty(value = "approved by admin/university?")
     private Boolean approved = null;
 
-    @OneToOne
+    @ManyToOne
     private Program program;
 
     @JsonIgnore

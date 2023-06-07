@@ -67,13 +67,13 @@ public class Post {
     @JoinTable(name = "post_queue_list")
     private List<Student> queueList = new ArrayList<>();
 
-    @OneToOne
+    @ManyToOne
     private Student leader;
 
     @ManyToMany
     private List<Deliverable> deliverables = new ArrayList<>();
 
-    @OneToOne
+    @ManyToOne
     private Account author;
 
     private Boolean status = null;
