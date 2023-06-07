@@ -200,6 +200,14 @@ public class LunihApplication implements CommandLineRunner {
         dto.setIndustryList(industryList);
 
         programService.create(dto);
+
+        dto.setNameEn("Technology");
+        dto.setNameLv("Tehnoloģija");
+        dto.setStudyLevel(EnumStudyLevel.LEVEL_MASTER.name());
+        industryList.add(industryService.listAll().get(1).getId());
+        dto.setIndustryList(industryList);
+
+        programService.create(dto);
     }
 
     private void createIndustry() {
