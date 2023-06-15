@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -46,7 +48,7 @@ public class Post {
     @Column(nullable = false, length = 500)
     private String descriptionLv;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Industry> industryList = new ArrayList<>();
 
     @Column(nullable = false)
@@ -59,18 +61,21 @@ public class Post {
     @ApiModelProperty(value = "number of slot are allowed. Job/Internship -> slot | Thesis/Research 1 -> individual, >= 2 -> team")
     private int numSlot;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "post_student_list")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Student> studentList = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "post_queue_list")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Student> queueList = new ArrayList<>();
 
     @ManyToOne
     private Student leader;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     private List<Deliverable> deliverables = new ArrayList<>();
 
     @ManyToOne

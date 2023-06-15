@@ -41,7 +41,7 @@ public class University {
 
     private String phoneNumber;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @ApiModelProperty(value = "list of program")
     private List<Program> programList;
 
