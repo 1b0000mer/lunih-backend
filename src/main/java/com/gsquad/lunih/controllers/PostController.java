@@ -4,6 +4,7 @@ import com.gsquad.lunih.dtos.PostDTO;
 import com.gsquad.lunih.entities.Post;
 import com.gsquad.lunih.services.post.PostService;
 import io.swagger.annotations.ApiOperation;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +33,20 @@ public class PostController {
             @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
             @RequestParam(value = "column", required = false, defaultValue = "id") String column
     ) {
-        return new ResponseEntity<>(service.listAllPaging(search, page, size, sort, column), HttpStatus.OK);
+        Page<Post> posts = service.listAllPaging(search, page, size, sort, column);
+        for (Post post : posts.getContent()) {
+            Hibernate.initialize(post.getQueueList());
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<Post>> listAll() {
-        return new ResponseEntity<>(service.listAll(), HttpStatus.OK);
+        List<Post> posts = service.listAll();
+        for (Post post : posts) {
+            Hibernate.initialize(post.getQueueList());
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
     @PutMapping("/student-apply/{id}")
@@ -47,7 +56,11 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Post> getById(@PathVariable int id) {
-        return new ResponseEntity<>(service.get(id), HttpStatus.OK);
+        Post post = service.get(id);
+        if (post != null) {
+            Hibernate.initialize(post.getQueueList());
+        }
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @PostMapping
