@@ -1,9 +1,11 @@
 package com.gsquad.lunih.controllers;
 
 import com.gsquad.lunih.dtos.categories.PostTypeDTO;
+import com.gsquad.lunih.entities.Post;
 import com.gsquad.lunih.entities.categories.PostType;
 import com.gsquad.lunih.services.post_type.PostTypeService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,17 @@ public class PostTypeController {
         this.service = postTypeService;
     }
 
-
+    @ApiOperation(value = "list all Post Type with paging")
+    @GetMapping("/paging")
+    public ResponseEntity<Page<PostType>> listAllPaging(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "page", required = false, defaultValue = "${paging.default.page}") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "${paging.default.size}")int size,
+            @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
+            @RequestParam(value = "column", required = false, defaultValue = "id") String column
+    ) {
+        return new ResponseEntity<>(service.listAllPaging(search, page, size, sort, column), HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<PostType>> listAll() {

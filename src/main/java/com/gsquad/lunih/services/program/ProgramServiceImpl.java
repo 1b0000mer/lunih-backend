@@ -138,10 +138,10 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
-    public String delete(int id) {
+    public Program delete(int id) {
         Program program = get(id);
 
         programRepo.delete(program);
-        return "Done!";
+        return program;
     }
 }

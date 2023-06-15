@@ -48,6 +48,9 @@ public class Student {
 
     private String phoneNumber;
 
+    @ApiModelProperty(value = "id file for approve")
+    private int fileCertification;
+
     @ApiModelProperty(value = "approved by admin/university?")
     private Boolean approved = null;
 

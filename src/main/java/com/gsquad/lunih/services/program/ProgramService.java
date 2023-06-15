@@ -20,6 +20,6 @@ public interface ProgramService {
 
     Program changeStatus(int id);
 
-    String delete(int id);
+    Program delete(int id);
 
 }

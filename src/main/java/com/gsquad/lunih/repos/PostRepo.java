@@ -11,9 +11,15 @@ import java.util.List;
 
 public interface PostRepo extends JpaRepository <Post, Integer> {
 
+//    @Query(
+//            value = "SELECT * FROM Post p " +
+//                    "WHERE p.status=true AND (p.titleEn like %?1% OR p.titleLv like %?1%)",
+//            countQuery = "SELECT count(*) FROM Post",
+//            nativeQuery = true
+//    )
     @Query(
             value = "SELECT * FROM Post p " +
-                    "WHERE p.status=true AND (p.titleEn like %?1% OR p.titleLv like %?1%)",
+                    "WHERE p.titleEn like %?1% OR p.titleLv like %?1%",
             countQuery = "SELECT count(*) FROM Post",
             nativeQuery = true
     )

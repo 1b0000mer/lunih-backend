@@ -1,21 +1,17 @@
 package com.gsquad.lunih.controllers;
 
 import com.gsquad.lunih.dtos.PostDTO;
-import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
-import com.gsquad.lunih.entities.Deliverable;
 import com.gsquad.lunih.entities.Post;
-import com.gsquad.lunih.entities.Student;
 import com.gsquad.lunih.services.post.PostService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.security.Principal;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/rest/post")
@@ -25,6 +21,18 @@ public class PostController {
 
     public PostController(PostService service) {
         this.service = service;
+    }
+
+    @ApiOperation(value = "list all post with paging")
+    @GetMapping("/paging")
+    public ResponseEntity<Page<Post>> listAllPaging(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "page", required = false, defaultValue = "${paging.default.page}") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "${paging.default.size}")int size,
+            @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
+            @RequestParam(value = "column", required = false, defaultValue = "id") String column
+    ) {
+        return new ResponseEntity<>(service.listAllPaging(search, page, size, sort, column), HttpStatus.OK);
     }
 
     @GetMapping

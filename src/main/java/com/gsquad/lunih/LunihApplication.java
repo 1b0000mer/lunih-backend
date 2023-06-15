@@ -231,7 +231,7 @@ public class LunihApplication implements CommandLineRunner {
         List<Integer> industryList = new ArrayList<>();
         industryList.add(industryService.listAll().get(0).getId());
         dto.setIndustryList(industryList);
-        dto.setCompanyLogo("123");
+//        dto.setCompanyLogo();
         dto.setCompanyContactPersonName("Neil Ward");
         accountService.createNewCompany(dto);
 

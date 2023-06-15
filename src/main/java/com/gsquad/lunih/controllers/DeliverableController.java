@@ -1,10 +1,8 @@
 package com.gsquad.lunih.controllers;
 
-import com.gsquad.lunih.dtos.PostDTO;
 import com.gsquad.lunih.dtos.deliverables.ChangeStatusDTO;
 import com.gsquad.lunih.dtos.deliverables.DeliverableDTO;
 import com.gsquad.lunih.entities.Deliverable;
-import com.gsquad.lunih.entities.Post;
 import com.gsquad.lunih.services.deliverable.DeliverableService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -26,7 +23,7 @@ public class DeliverableController {
         this.service = deliverableService;
     }
 
-    @ApiOperation(value = "list all deliverable with paging and status=true")
+    @ApiOperation(value = "list all deliverable with paging")
     @GetMapping("/paging")
     public ResponseEntity<Page<Deliverable>> listAllPaging(
             @RequestParam(value = "search", required = false, defaultValue = "") String search,

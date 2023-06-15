@@ -50,10 +50,10 @@ public class Company {
     private String companyWebsite;
 
     @ApiModelProperty(value = "id image file")
-    private String companyLogo;
+    private int companyLogo;
 
 //    @ApiModelProperty(value = "id file for approve")
-//    private String fileCertification;
+//    private int fileCertification;
 //    @ApiModelProperty(value = "approved by admin/university?")
 //    private Boolean approved = null;
 //    private String reason;

@@ -4,6 +4,7 @@ import com.gsquad.lunih.dtos.categories.IndustryDTO;
 import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.services.industry.IndustryService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,26 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest/Industry")
+@RequestMapping("/rest/industry")
 public class IndustryController {
 
     private final IndustryService service;
 
     public IndustryController(IndustryService industryService) {
         this.service = industryService;
+    }
+
+
+    @ApiOperation(value = "list all industry with paging")
+    @GetMapping("/paging")
+    public ResponseEntity<Page<Industry>> listAllPaging(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "page", required = false, defaultValue = "${paging.default.page}") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "${paging.default.size}")int size,
+            @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
+            @RequestParam(value = "column", required = false, defaultValue = "id") String column
+    ) {
+        return new ResponseEntity<>(service.listAllPaging(search, page, size, sort, column), HttpStatus.OK);
     }
 
     @GetMapping

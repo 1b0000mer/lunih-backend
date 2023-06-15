@@ -28,7 +28,7 @@ public class AccountController {
         this.service = service;
     }
 
-    @ApiOperation(value = "list all account with paging and status=true")
+    @ApiOperation(value = "list all account with paging")
     @GetMapping("/paging")
     public ResponseEntity<Page<Account>> listAllPaging(
             @RequestParam(value = "search", required = false, defaultValue = "") String search,

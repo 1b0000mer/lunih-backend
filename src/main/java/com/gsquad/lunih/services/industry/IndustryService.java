@@ -2,12 +2,13 @@ package com.gsquad.lunih.services.industry;
 
 import com.gsquad.lunih.dtos.categories.IndustryDTO;
 import com.gsquad.lunih.entities.categories.Industry;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IndustryService {
 
-    //Page<PostType> listAllPaging(String search, int page, int size, String sort, String column);
+    Page<Industry> listAllPaging(String search, int page, int size, String sort, String column);
 
     List<Industry> listAll();
 

@@ -190,10 +190,23 @@ public class PostServiceImpl implements PostService {
 
         List<Student> studentList = new ArrayList<>();
         dto.getStudentList().forEach(studentID -> studentList.add(studentService.get(studentID)));
+
+        if (studentList.size() > dto.getNumSlot()) {
+            throw new InvalidException(messageSource.getMessage("error.post.studentList-exceed", null, locale));
+        }
+
+
         post.setStudentList(studentList);
 
         List<Student> queueList = new ArrayList<>();
-        dto.getQueueList().forEach(studentID -> queueList.add(studentService.get(String.valueOf(studentID))));
+        dto.getQueueList().forEach(studentID -> {
+            if (dto.getStudentList().contains(studentID)) {
+                throw new InvalidException(String.format(messageSource.getMessage("error.post.queueList-exist", null, locale), studentID));
+            }
+            queueList.add(studentService.get(String.valueOf(studentID)));
+        });
+
+
         post.setQueueList(queueList);
 
         List<Deliverable> deliverables = new ArrayList<>();

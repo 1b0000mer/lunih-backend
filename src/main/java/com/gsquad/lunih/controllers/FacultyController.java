@@ -22,7 +22,7 @@ public class FacultyController {
         this.service = facultyService;
     }
 
-    @ApiOperation(value = "list all faculty with paging and status=true")
+    @ApiOperation(value = "list all faculty with paging")
     @GetMapping("/paging")
     public ResponseEntity<Page<Faculty>> listAllPaging(
             @RequestParam(value = "search", required = false, defaultValue = "") String search,

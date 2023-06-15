@@ -11,9 +11,15 @@ import java.util.Optional;
 public interface AccountRepo extends JpaRepository<Account, Integer> {
 
     //Account as user_account
+//    @Query(
+//            value = "SELECT * FROM user_account a " +
+//                    "WHERE a.status=true AND a.email LIKE %?1%",
+//            countQuery = "SELECT count(*) FROM Account",
+//            nativeQuery = true
+//    )
     @Query(
             value = "SELECT * FROM user_account a " +
-                    "WHERE a.status=true AND a.email LIKE %?1%",
+                    "WHERE a.email LIKE %?1%",
             countQuery = "SELECT count(*) FROM Account",
             nativeQuery = true
     )

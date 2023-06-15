@@ -9,7 +9,7 @@ import java.util.Date;
 public class DeliverableDTO {
     private String nameEn;
     private String nameLv;
-    private String fileAttachment;
+    private int fileAttachment;
     private Date deadLine;
     private String status;
 
