@@ -35,7 +35,7 @@ public class Program {
     @OneToOne
     private Faculty faculty;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @ApiModelProperty(name = "field of the program?")
     private List<Industry> industryList = new ArrayList<>();
 

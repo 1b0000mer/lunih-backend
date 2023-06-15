@@ -195,7 +195,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         if (ObjectUtils.isEmpty(dto.getCompanyContactPersonName())) {
-            throw new InvalidException(messageSource.getMessage("error.company.personname-empty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.company.personName-empty", null, locale));
         }
 
         company.setCompanyContactPersonName(dto.getCompanyContactPersonName());
@@ -301,15 +301,15 @@ public class AccountServiceImpl implements AccountService {
         String newPass = changePasswordDTO.getNewPass();
 
         if (ObjectUtils.isEmpty(oldPass)) {
-            throw new InvalidException(messageSource.getMessage("error.account.oldpassword-empty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.account.oldPassword-empty", null, locale));
         }
 
         if (ObjectUtils.isEmpty(newPass)) {
-            throw new InvalidException(messageSource.getMessage("error.account.newpassword-empty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.account.newPassword-empty", null, locale));
         }
 
         if (!oldPass.equals(account.getPassword())) {
-            throw new InvalidException(messageSource.getMessage("error.account.oldpass-notmatch", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.account.oldPass-notmatch", null, locale));
         }
 
         account.setPassword(newPass);

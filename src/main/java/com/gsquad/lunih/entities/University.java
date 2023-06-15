@@ -41,7 +41,7 @@ public class University {
 
     private String phoneNumber;
 
-    @OneToMany
+    @ManyToMany
     @ApiModelProperty(value = "list of program")
     private List<Program> programList;
 

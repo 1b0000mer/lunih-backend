@@ -22,7 +22,7 @@ public class ProgramController {
         this.service = programService;
     }
 
-   @ApiOperation(value = "list all program with paging and status=true")
+   @ApiOperation(value = "list all program with paging")
     @GetMapping("/paging")
     public ResponseEntity<Page<Program>> listAllPaging(
             @RequestParam(value = "search", required = false, defaultValue = "") String search,
@@ -65,7 +65,7 @@ public class ProgramController {
 
     @ApiOperation(value = "Delete Program")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable int id) {
+    public ResponseEntity<Program> delete(@PathVariable int id) {
         return new ResponseEntity<>(service.delete(id), HttpStatus.OK);
     }
 }

@@ -36,7 +36,7 @@ public class Deliverable {
     private String nameLv;
 
     @ApiModelProperty(value = "Id file")
-    private String fileAttachment;
+    private int fileAttachment;
 
     @ApiModelProperty(value = "Set a deadline for deliverable, can be null")
     private Date deadLine;

@@ -59,7 +59,7 @@ public class CompanyServiceImpl implements CompanyService {
     public Company getCurrent(Principal principal) {
         Locale locale = LocaleContextHolder.getLocale();
         return companyRepo.findByAccount_Email(principal.getName())
-                .orElseThrow(() -> new NotFoundException(String.format("error.company")));
+                .orElseThrow(() -> new NotFoundException(String.format(messageSource.getMessage("error.company.email-notfound", null, locale), principal.getName())));
     }
 
     @Override
@@ -85,7 +85,7 @@ public class CompanyServiceImpl implements CompanyService {
         company.setCompanyLogo(dto.getCompanyLogo());
 
         if (ObjectUtils.isEmpty(dto.getCompanyContactPersonName())) {
-            throw new InvalidException(messageSource.getMessage("error.company.personname-empty", null, locale));
+            throw new InvalidException(messageSource.getMessage("error.company.personName-empty", null, locale));
         }
 
         company.setCompanyContactPersonName(dto.getCompanyContactPersonName());

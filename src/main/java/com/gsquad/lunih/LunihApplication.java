@@ -1,16 +1,15 @@
 package com.gsquad.lunih;
 
+import com.gsquad.lunih.controllers.AuthenticationController;
 import com.gsquad.lunih.dtos.PostDTO;
-import com.gsquad.lunih.dtos.accountDTO.AdminAccountDTO;
-import com.gsquad.lunih.dtos.accountDTO.CompanyAccountDTO;
-import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
-import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
+import com.gsquad.lunih.dtos.accountDTO.*;
 import com.gsquad.lunih.dtos.categories.FacultyDTO;
 import com.gsquad.lunih.dtos.categories.IndustryDTO;
 import com.gsquad.lunih.dtos.categories.PostTypeDTO;
 import com.gsquad.lunih.dtos.categories.ProgramDTO;
 import com.gsquad.lunih.dtos.student.ApproveStudentDTO;
 import com.gsquad.lunih.entities.Post;
+import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.repos.*;
 import com.gsquad.lunih.repos.categories.FacultyRepo;
 import com.gsquad.lunih.repos.categories.IndustryRepo;
@@ -27,14 +26,18 @@ import com.gsquad.lunih.services.student.StudentService;
 import com.gsquad.lunih.services.university.UniversityService;
 import com.gsquad.lunih.utils.EnumCompanyType;
 import com.gsquad.lunih.utils.EnumStudyLevel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @SpringBootApplication
@@ -59,6 +62,9 @@ public class LunihApplication implements CommandLineRunner {
     private final ProgramService programService;
     private final PostRepo postRepo;
     private final PostService postService;
+
+    @Autowired
+    private AuthenticationController authenticationController;
 
     @Value("${default.password}")
     private String defaultPassword;
@@ -91,6 +97,24 @@ public class LunihApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         initData();
+        doLogin();
+    }
+
+    private void doLogin() {
+        LoginFormDTO formDTO = new LoginFormDTO();
+        formDTO.setPassword(defaultPassword);
+
+        formDTO.setEmail("admin@admin.com");
+        System.out.println("admin token: Bearer " + authenticationController.loginForm(formDTO).getBody().getToken());
+
+        formDTO.setEmail("student@student.com");
+        System.out.println("student token: Bearer " + authenticationController.loginForm(formDTO).getBody().getToken());
+
+        formDTO.setEmail("university@university.com");
+        System.out.println("university token: Bearer " + authenticationController.loginForm(formDTO).getBody().getToken());
+
+        formDTO.setEmail("company@company.com");
+        System.out.println("company token: Bearer " + authenticationController.loginForm(formDTO).getBody().getToken());
     }
 
     private void initData() {
@@ -144,6 +168,7 @@ public class LunihApplication implements CommandLineRunner {
         postService.create(dto);
 
         dto.setPostType(postTypeRepo.findAll().get(1).getId());
+        industryList.add(industryService.listAll().get(1).getId());
         dto.setTitleEn("This is a Thesis Topic Post");
         dto.setTitleLv("Šis ir diplomdarba tēmas ieraksts");
         dto.setDescriptionEn("Description Topic En");
@@ -175,6 +200,14 @@ public class LunihApplication implements CommandLineRunner {
         dto.setIndustryList(industryList);
 
         programService.create(dto);
+
+        dto.setNameEn("Technology");
+        dto.setNameLv("Tehnoloģija");
+        dto.setStudyLevel(EnumStudyLevel.LEVEL_MASTER.name());
+        industryList.add(industryService.listAll().get(1).getId());
+        dto.setIndustryList(industryList);
+
+        programService.create(dto);
     }
 
     private void createIndustry() {
@@ -198,8 +231,16 @@ public class LunihApplication implements CommandLineRunner {
         List<Integer> industryList = new ArrayList<>();
         industryList.add(industryService.listAll().get(0).getId());
         dto.setIndustryList(industryList);
-        dto.setCompanyLogo("123");
+//        dto.setCompanyLogo();
         dto.setCompanyContactPersonName("Neil Ward");
+        accountService.createNewCompany(dto);
+
+        dto.setEmail("company@company.com");
+        dto.setCompanyName("Emergn");
+        dto.setCompanyType(EnumCompanyType.COMPANY_PRIVATE.name());
+        industryList.add(industryService.listAll().get(1).getId());
+        dto.setIndustryList(industryList);
+        dto.setCompanyContactPersonName("Neil John");
         accountService.createNewCompany(dto);
     }
 
@@ -239,7 +280,7 @@ public class LunihApplication implements CommandLineRunner {
         ApproveStudentDTO approveStudentDTO = new ApproveStudentDTO(true, "");
         studentService.approveStudent("22021P", approveStudentDTO);
 
-        dto.setEmail("test@gmail.com");
+        dto.setEmail("student@student.com");
         dto.setPassword(defaultPassword);
         dto.setStudentID("22022P");
         dto.setFirstName("Test Quoc");
@@ -247,6 +288,12 @@ public class LunihApplication implements CommandLineRunner {
         dto.setGender("Female");
         dto.setBirthDay(bday);
         dto.setPhoneNumber("+37199999999");
+        accountService.createNewStudent(dto);
+
+        dto.setEmail("student1@student.com");
+        dto.setStudentID("22023P");
+        dto.setFirstName("Test Student");
+        dto.setSurName("Munch");
         accountService.createNewStudent(dto);
     }
 

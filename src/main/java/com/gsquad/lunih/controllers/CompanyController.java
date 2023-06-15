@@ -1,11 +1,8 @@
 package com.gsquad.lunih.controllers;
 
 import com.gsquad.lunih.dtos.accountDTO.CompanyAccountDTO;
-import com.gsquad.lunih.dtos.accountDTO.UniversityAccountDTO;
 import com.gsquad.lunih.entities.Company;
-import com.gsquad.lunih.entities.University;
 import com.gsquad.lunih.services.company.CompanyService;
-import com.gsquad.lunih.services.university.UniversityService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

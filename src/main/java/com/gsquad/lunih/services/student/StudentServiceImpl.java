@@ -1,5 +1,6 @@
 package com.gsquad.lunih.services.student;
 
+import com.gsquad.lunih.dtos.UploadFileDTO;
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.dtos.student.ApproveStudentDTO;
 import com.gsquad.lunih.entities.Student;
@@ -135,6 +136,14 @@ public class StudentServiceImpl implements StudentService {
         Student student = get(studentID);
 
         studentRepo.delete(student);
+        return student;
+    }
+
+    @Override
+    public Student uploadCertification(Principal principal, UploadFileDTO dto) {
+        Student student = getCurrent(principal);
+        student.setFileCertification(dto.getIdFile());
+        studentRepo.save(student);
         return student;
     }
 }

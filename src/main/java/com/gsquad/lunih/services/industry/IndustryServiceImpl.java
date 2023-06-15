@@ -5,8 +5,11 @@ import com.gsquad.lunih.entities.categories.Industry;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.exceptions.NotFoundException;
 import com.gsquad.lunih.repos.categories.IndustryRepo;
+import com.gsquad.lunih.utils.PageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -27,12 +30,12 @@ public class IndustryServiceImpl implements IndustryService {
         this.messageSource = messageSource;
     }
 
-    /*@Override
-    public Page<PostType> listAllPaging(String search, int page, int size, String sort, String column) {
+    @Override
+    public Page<Industry> listAllPaging(String search, int page, int size, String sort, String column) {
         Pageable pageable = PageUtils.createPageable(page, size, sort, column);
 
-       return postTypeRepo.getAllPostTypePaging(search, pageable);
-    }*/
+       return industryRepo.getAllIndustryPaging(search, pageable);
+    }
 
     @Override
     public List<Industry> listAll() {

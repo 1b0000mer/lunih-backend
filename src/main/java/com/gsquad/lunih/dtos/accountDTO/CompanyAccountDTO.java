@@ -30,7 +30,7 @@ public class CompanyAccountDTO {
     private String companyWebsite;
 
     @ApiModelProperty(value = "id image file")
-    private String companyLogo;
+    private int companyLogo;
 
     @ApiModelProperty(value = "mr/mrs/ms...")
     private String companyContactPersonTitle;

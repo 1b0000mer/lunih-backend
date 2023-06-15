@@ -1,5 +1,6 @@
 package com.gsquad.lunih.services.student;
 
+import com.gsquad.lunih.dtos.UploadFileDTO;
 import com.gsquad.lunih.dtos.accountDTO.StudentAccountDTO;
 import com.gsquad.lunih.dtos.student.ApproveStudentDTO;
 import com.gsquad.lunih.entities.Student;
@@ -23,5 +24,7 @@ public interface StudentService {
     Student approveStudent(String studentID, ApproveStudentDTO approveStudentDTO);
 
     Student delete(String studentID);
+
+    Student uploadCertification(Principal principal, UploadFileDTO dto);
 
 }
