@@ -49,7 +49,7 @@ public class AuthenticationController {
     @ApiOperation(value = "User login by form (email, password), avatar null")
     @PostMapping
     public ResponseEntity<TokenDetails> loginForm(@Valid @RequestBody LoginFormDTO dto) {
-        AccountAuthenticationToken authenticationToken = new AccountAuthenticationToken(
+            AccountAuthenticationToken authenticationToken = new AccountAuthenticationToken(
                 dto.getEmail(),
                 dto.getPassword(),
                 true

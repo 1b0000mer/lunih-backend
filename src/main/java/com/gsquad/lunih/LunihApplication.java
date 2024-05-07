@@ -9,6 +9,7 @@ import com.gsquad.lunih.dtos.categories.PostTypeDTO;
 import com.gsquad.lunih.dtos.categories.ProgramDTO;
 import com.gsquad.lunih.dtos.student.ApproveStudentDTO;
 import com.gsquad.lunih.entities.Post;
+import com.gsquad.lunih.entities.categories.Faculty;
 import com.gsquad.lunih.exceptions.InvalidException;
 import com.gsquad.lunih.repos.*;
 import com.gsquad.lunih.repos.categories.FacultyRepo;
@@ -299,12 +300,18 @@ public class LunihApplication implements CommandLineRunner {
 
     private void createFaculty() {
         FacultyDTO dto = new FacultyDTO();
-        dto.setNameEn("Faculty of Science and Engineering");
-        dto.setNameLv("Dabas un inženierzinātņu fakultāte");
-        facultyService.create(dto);
+        for (int i = 0; i < 6; i++) {
+            dto.setNameEn("Faculty of Science and Engineering " + i);
+            dto.setNameLv("Dabas un inženierzinātņu fakultāte " + i);
+            facultyService.create(dto);
 
-        dto.setNameEn("Faculty of Humanitarian sciences and Arts");
-        dto.setNameLv("Humanitāro un mākslas zinātņu fakultāte");
-        facultyService.create(dto);
+            dto.setNameEn("Faculty of Humanitarian sciences and Arts " + i + 1);
+            dto.setNameLv("Humanitāro un mākslas zinātņu fakultāte " + i + 1);
+            facultyService.create(dto);
+        }
+        dto.setNameEn("false");
+        dto.setNameLv("false");
+        Faculty falseFaculty = facultyService.create(dto);
+        facultyService.changeStatus(falseFaculty.getId());
     }
 }
